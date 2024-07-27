@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        body {
+            background-color: #000000;
+            color: #D4AF37;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #1b1c1d;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .ui.table {
+            width: 100%;
+            background-color: #333333;
+        }
+        .ui.table th, .ui.table td {
+            color: #D4AF37;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #444444;
+        }
+        .ui.table th {
+            background-color: #222222;
+        }
+        .ui.table tr:hover {
+            background-color: #444444;
+        }
+        .ui.button.red {
+            background-color: #db2828;
+            color: #fff;
+        }
+        .ui.button.red:hover {
+            background-color: #a21d1d;
+        }
+        @media (max-width: 600px) {
+            .ui.table th, .ui.table td {
+                display: block;
+                text-align: right;
+            }
+            .ui.table th::after, .ui.table td::before {
+                content: attr(data-label);
+                float: left;
+                font-weight: bold;
+                text-transform: uppercase;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Manage Users</h1>
+        <table class="ui table">
+            <thead>
+                <tr>
+                    <th data-label="Name">Name</th>
+                    <th data-label="Email">Email</th>
+                    <th data-label="Telephone">Telephone</th>
+                    <th data-label="Actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% users.forEach(user => { %>
+                    <tr>
+                        <td data-label="Name"><%= user.name %></td>
+                        <td data-label="Email"><%= user.email %></td>
+                        <td data-label="Telephone"><%= user.tel %></td>
+                        <td data-label="Actions">
+                            <form action="/admin/users/delete" method="post" style="display:inline;">
+                                <input type="hidden" name="userId" value="<%= user._id %>">
+                                <button class="ui button red" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</body>
+</html>

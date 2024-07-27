@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Successful</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f8f9fa;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            width: 400px;
+        }
+        .logo img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #000000; /* Black */
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #D4AF37; /* Gold */
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #c3952d;
+        }
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+            p {
+                font-size: 14px;
+            }
+            button {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/public/images/TEUC logo.png" alt="Logo">
+        </div>
+        <h1>Registration Successful</h1>
+        <p>Thank you for registering. Please check your email for further details.</p>
+        <button onclick="window.location.href='/'">Go to Home</button>
+    </div>
+</body>
+</html>

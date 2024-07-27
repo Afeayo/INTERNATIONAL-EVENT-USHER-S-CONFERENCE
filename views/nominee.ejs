@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nominees</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
+</head>
+<body>
+    <div class="ui container">
+        <h2 class="ui header">Nominees</h2>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% nominees.forEach(nominee => { %>
+                    <tr>
+                        <td><%= nominee.name %></td>
+                        <td><%= nominee.category %></td>
+                        <td><img src="<%= nominee.image %>" alt="<%= nominee.name %>" style="width: 50px;"></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div class="ui pagination menu">
+            <% if (currentPage > 1) { %>
+                <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" class="item">Previous</a>
+            <% } %>
+
+            <% for (let i = 1; i <= totalPages; i++) { %>
+                <a href="?page=<%= i %>&limit=<%= limit %>" class="item <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+            <% } %>
+
+            <% if (currentPage < totalPages) { %>
+                <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" class="item">Next</a>
+            <% } %>
+        </div>
+    </div>
+</body>
+</html>

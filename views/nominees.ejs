@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nominees</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
+    <style>
+        .ui.header {
+            color: #D4AF37;
+            text-align: center;
+            margin-top: 20px;
+        }
+        .ui.button.primary {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+        .ui.button.primary:hover {
+            background-color: #c49b2e;
+        }
+        .ui.pagination.menu .active.item {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+        table.ui.celled.table {
+            margin-top: 20px;
+        }
+        .nominee-image-container {
+            text-align: center;
+        }
+        img.nominee-image {
+            border-radius: 50%;
+            height: 100px;
+            width: 100px;
+            object-fit: cover;
+            display: inline-block;
+        }
+        td, th {
+            text-align: center;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui container">
+        <h2 class="ui header">Nominees</h2>
+        <table class="ui celled table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Image</th>
+                    <th>Vote</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% nominees.forEach(nominee => { %>
+                    <tr>
+                        <td><%= nominee.name %></td>
+                        <td><%= nominee.category %></td>
+                        <td class="nominee-image-container">
+                            <img class="nominee-image" src="/<%= nominee.image %>" alt="<%= nominee.name %>">
+                        </td>
+                        <td>
+                            <a href="/vote/<%= encodeURIComponent(nominee.name.replace(/ /g, '-')) %>" class="ui button primary">Vote</a>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <div class="ui center aligned container">
+            <div class="ui pagination menu">
+                <% if (currentPage > 1) { %>
+                    <a href="?page=<%= currentPage - 1 %>&limit=<%= limit %>" class="item">Previous</a>
+                <% } %>
+
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a href="?page=<%= i %>&limit=<%= limit %>" class="item <%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+                <% } %>
+
+                <% if (currentPage < totalPages) { %>
+                    <a href="?page=<%= currentPage + 1 %>&limit=<%= limit %>" class="item">Next</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
+</body>
+</html>

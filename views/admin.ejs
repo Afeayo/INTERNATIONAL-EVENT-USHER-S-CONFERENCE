@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f9f9f9;
+            font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+        }
+        .ui.menu .item img.logo {
+            margin-right: 1.5em;
+        }
+        .main.container {
+            margin-top: 2em;
+        }
+        .main.container .ui.grid {
+            margin-top: 2em;
+        }
+        .ui.card {
+            margin-top: 2em;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        .ui.left.fixed.vertical.menu {
+            width: 250px;
+        }
+        .ui.main.container {
+            margin-left: 275px;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui left fixed vertical menu">
+        <div class="item">
+            <img class="logo" src="/images/logo.png">
+        </div>
+        <a href="/admin" class="item">Home</a>
+        <a href="/admin/users" class="item">Users</a>
+        <a href="/admin/nominees" class="item">Nominees</a>
+        <a href="/admin/results" class="item">Results</a>
+        <a href="/admin/download/users" class="item">Download Users Report</a>
+        <a href="/admin/download/nominees" class="item">Download Nominee Results</a>
+        <div class="item">
+            <div class="ui button"><%= admin.username %></div>
+        </div>
+        <a href="/admin/logout" class="item">Logout</a>
+    </div>
+
+    <div class="ui main container">
+        <h2 class="ui center aligned icon header">
+            <i class="circular users icon"></i>
+            Admin Dashboard
+        </h2>
+        
+        <div class="ui stackable four column grid">
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                        <i class="user icon"></i>
+                        <%= totalUsers %>
+                    </div>
+                    <div class="label">
+                        Total Users
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="ui statistic">
+                    <div class="value">
+                        <i class="money bill alternate icon"></i>
+                        ₦<%= totalRevenue %>
+                    </div>
+                    <div class="label">
+                        Total Revenue
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chart-container">
+            <canvas id="newUsersChart"></canvas>
+        </div>
+
+        <h3 class="ui header">Top 10 Nominees</h3>
+        <div class="chart-container">
+            <canvas id="topNomineesChart"></canvas>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Fetch new users data
+            const userResponse = await fetch('/admin/data/users');
+            const userData = await userResponse.json();
+
+            const dailyData = userData.daily.map(data => data.count);
+            const weeklyData = userData.weekly.map(data => data.count);
+            const monthlyData = userData.monthly.map(data => data.count);
+
+            const userCtx = document.getElementById('newUsersChart').getContext('2d');
+            new Chart(userCtx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: dailyData.length }, (_, i) => i + 1),
+                    datasets: [{
+                        label: 'New Users Per Day',
+                        data: dailyData,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }, {
+                        label: 'New Users Per Week',
+                        data: weeklyData,
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }, {
+                        label: 'New Users Per Month',
+                        data: monthlyData,
+                        borderColor: 'rgba(255, 159, 64, 1)',
+                        borderWidth: 1,
+                        fill: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Fetch top nominees data
+            const nomineesResponse = await fetch('/admin/data/top-nominees');
+            const nomineesData = await nomineesResponse.json();
+
+            const nomineeNames = nomineesData.map(nominee => nominee.name);
+            const nomineeVotes = nomineesData.map(nominee => nominee.count);
+
+            const nomineeCtx = document.getElementById('topNomineesChart').getContext('2d');
+            new Chart(nomineeCtx, {
+                type: 'bar',
+                data: {
+                    labels: nomineeNames,
+                    datasets: [{
+                        label: 'Votes',
+                        data: nomineeVotes,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

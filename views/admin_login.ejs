@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        body {
+            background-color: #000000;
+            color: #D4AF37;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .form-container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background-color: #1b1c1d;
+            border-radius: 10px;
+        }
+        .ui.button {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+        .ui.button:hover {
+            background-color: #000000;
+            color: #D4AF37;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Admin Login</h1>
+        <form class="ui form" action="/admin/login" method="post">
+            <div class="field">
+                <label for="identifier">Username or Email:</label>
+                <input type="text" id="identifier" name="identifier" required>
+            </div>
+            <div class="field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <button class="ui button" type="submit">Login</button>
+            <% if (error) { %>
+                <p class="error-message"><%= error %></p>
+            <% } %>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</body>
+</html>

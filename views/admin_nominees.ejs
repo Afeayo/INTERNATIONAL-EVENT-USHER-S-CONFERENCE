@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Nominees</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        body {
+            background-color: #000000;
+            color: #D4AF37;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #1b1c1d;
+            border-radius: 10px;
+        }
+        .ui.button {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+        .ui.button:hover {
+            background-color: #000000;
+            color: #D4AF37;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .nominee-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .nominee-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #333333;
+            border-radius: 5px;
+        }
+        .nominee-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .ui.button.red {
+            background-color: #db2828;
+        }
+        .ui.button.red:hover {
+            background-color: #a21d1d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Nominees</h1>
+        <ul class="nominee-list">
+            <% nominees.forEach(nominee => { %>
+                <li class="nominee-item">
+                    <span><%= nominee.name %></span>
+                    <div class="nominee-actions">
+                        <a class="ui button" href="/vote/<%= nominee.slug %>">Vote Link</a>
+                        <a class="ui button" href="/admin/nominees/edit/<%= nominee._id %>">Edit</a>
+                        <form action="/admin/nominees/delete" method="post" style="display:inline;">
+                            <input type="hidden" name="nomineeId" value="<%= nominee._id %>">
+                            <button class="ui button red" type="submit">Delete</button>
+                        </form>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+        <a class="ui button" href="/admin/nominees/add">Add Nominee</a>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nominees</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
+    <style>
+        .ui.card img {
+            border-radius: 50%;
+            height: 150px;
+            width: 150px;
+            object-fit: cover;
+        }
+        .ui.container {
+            margin-top: 20px;
+        }
+        .ui.header {
+            color: #D4AF37;
+        }
+        .ui.button.primary {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+        .ui.button.primary:hover {
+            background-color: #c49b2e;
+        }
+        .ui.pagination.menu .active.item {
+            background-color: #D4AF37;
+            color: #000000;
+        }
+    </style>
+</head>
+<body>
+    <div class="ui container">
+        <h2 class="ui header">Nominees</h2>
+        <% if (error) { %>
+            <div class="ui negative message">
+                <p><%= error %></p>
+            </div>
+        <% } %>
+        <div class="ui three stackable cards">
+            <% nominees.forEach(nominee => { %>
+                <div class="card">
+                    <div class="image">
+                        <% if (nominee.image) { %>
+                            <img src="/<%= nominee.image %>" alt="<%= nominee.name %>">
+                        <% } else { %>
+                            <div class="ui placeholder">
+                                <div class="image"></div>
+                            </div>
+                        <% } %>
+                    </div>
+                    <div class="content">
+                        <div class="header"><%= nominee.name %></div>
+                        <div class="meta">Category: <%= nominee.category %></div>
+                        <div class="description">
+                            <form class="ui form" action="/vote" method="POST">
+                                <input type="hidden" name="nomineeId" value="<%= nominee._id %>">
+                                <div class="field">
+                                    <input type="text" name="voterName" placeholder="Your Name" required>
+                                </div>
+                                <button class="ui button primary" type="submit">Vote</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="ui centered grid">
+            <div class="ui pagination menu">
+                <% if (currentPage > 1) { %>
+                    <a class="item" href="?page=<%= currentPage - 1 %>">Previous</a>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <a class="item <%= currentPage === i ? 'active' : '' %>" href="?page=<%= i %>"><%= i %></a>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                    <a class="item" href="?page=<%= currentPage + 1 %>">Next</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
+</body>
+</html>

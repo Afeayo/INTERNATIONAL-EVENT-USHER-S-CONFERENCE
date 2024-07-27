@@ -1,0 +1,254 @@
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: black;
+    color: aliceblue;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+nav .logo img {
+    height: 50px;
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+}
+
+nav ul li {
+    margin-left: 20px;
+}
+
+nav ul li a {
+    color: aliceblue;
+    text-decoration: none;
+    padding: 10px;
+}
+
+.bg {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.bg .slider img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.bg .content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
+
+.bg .content h1 {
+    font-size: 3em;
+}
+
+.bg .content p {
+    margin: 20px 0;
+}
+
+.bg .content button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    background-color: black;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.bg .content button a {
+    color: white;
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.box {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin: 10px;
+    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 30%;
+    text-align: center;
+}
+
+.box h2 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.box p {
+    color: #666;
+}
+
+.box.technology {
+    background-color: #FFA500;
+}
+
+.box.specials {
+    background-color: #00CED1;
+}
+
+.box.equipment {
+    background-color: #DC143C;
+}
+
+.wrapper {
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+    flex-wrap: wrap;
+}
+
+.wel, .gala, .poll {
+    flex: 1;
+    min-width: 300px;
+    margin: 10px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.gala .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.gala .gallery img {
+    width: calc(50% - 10px);
+    border-radius: 5px;
+}
+
+.poll form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.poll label {
+    font-weight: bold;
+}
+
+.poll input, .poll textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.poll button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    background-color: #D4AF37;
+    color: white;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+footer {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.footer-top {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.footer-bottom {
+    margin-top: 20px;
+}
+
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.menu-toggle .hamburger {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 4px 0;
+    transition: 0.4s;
+}
+
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        background-color: black;
+        display: none;
+        text-align: center;
+    }
+
+    nav ul.active {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    nav ul li {
+        margin: 0;
+    }
+
+    .container {
+        flex-direction: column;
+    }
+
+    .box {
+        max-width: 100%;
+    }
+
+    .wrapper {
+        flex-direction: column;
+    }
+}

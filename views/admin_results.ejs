@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Results</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <style>
+        body {
+            background-color: #000000;
+            color: #D4AF37;
+            font-family: 'Arial', sans-serif;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #1b1c1d;
+            border-radius: 10px;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .ui.table {
+            width: 100%;
+            background-color: #333333;
+        }
+        .ui.table th, .ui.table td {
+            color: #D4AF37;
+            text-align: left;
+            padding: 10px;
+            border-bottom: 1px solid #444444;
+        }
+        .ui.table th {
+            background-color: #222222;
+        }
+        .ui.table tr:hover {
+            background-color: #444444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Results</h1>
+        <table class="ui table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Votes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% nominees.forEach(nominee => { %>
+                    <tr>
+                        <td><%= nominee.name %></td>
+                        <td><%= nominee.category %></td>
+                        <td><%= nominee.votes %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.js"></script>
+</body>
+</html>
