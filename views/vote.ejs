@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vote for <%= nominee.name %></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
     <style>
         body {
             background-color: #f8f9fa;
@@ -14,30 +13,38 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            font-family: Arial, sans-serif;
         }
         .ui.container {
             max-width: 500px;
             background-color: #fff;
             padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .ui.header {
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
-        .ui.form img {
-            display: block;
+        .ui.header {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .circular-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
             margin: 0 auto 20px;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
         }
         .ui.placeholder.segment {
-            display: block;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
             margin: 0 auto 20px;
-            max-width: 100%;
-            height: auto;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ui.placeholder.segment i.icon {
+            font-size: 2em;
         }
         #loader {
             display: none;
@@ -74,7 +81,7 @@
     <div class="ui container">
         <h2 class="ui header">Vote for <%= nominee.name %></h2>
         <% if (nominee.image) { %>
-            <img src="<%= nominee.image %>" alt="<%= nominee.name %>">
+            <img src="<%= nominee.image %>" alt="<%= nominee.name %>" class="circular-image">
         <% } else { %>
             <div class="ui placeholder segment">
                 <div class="ui icon header">

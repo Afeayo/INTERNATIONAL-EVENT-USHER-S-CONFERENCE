@@ -33,7 +33,7 @@ function generateToken() {
 async function sendVerificationEmail(email, token) {
     let transporter = createTransporter();
 
-    let verificationLink = `http://localhost:8000/vote/verify-email?token=${token}&email=${email}`;
+    let verificationLink = `https://eventushersconference.com.ng//vote/verify-email?token=${token}&email=${email}`;
 
     let mailOptions = {
         from: process.env.EMAIL_USER,

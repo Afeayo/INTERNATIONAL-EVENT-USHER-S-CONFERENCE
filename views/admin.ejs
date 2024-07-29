@@ -37,9 +37,9 @@
 <body>
     <div class="ui left fixed vertical menu">
         <div class="item">
-            <img class="logo" src="/images/logo.png">
+            <img class="logo" src="/images/TEUC logo.png">
         </div>
-        <a href="/admin" class="item">Home</a>
+        <a href="/admin/register" class="item">Add Admin</a>
         <a href="/admin/users" class="item">Users</a>
         <a href="/admin/nominees" class="item">Nominees</a>
         <a href="/admin/results" class="item">Results</a>
@@ -93,80 +93,89 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', async () => {
-            // Fetch new users data
-            const userResponse = await fetch('/admin/data/users');
-            const userData = await userResponse.json();
+       document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        // Fetch new users data
+        const userResponse = await fetch('/admin/data/users');
+        if (!userResponse.ok) throw new Error('Network response was not ok');
+        const userData = await userResponse.json();
+        console.log(userData); // Log data
 
-            const dailyData = userData.daily.map(data => data.count);
-            const weeklyData = userData.weekly.map(data => data.count);
-            const monthlyData = userData.monthly.map(data => data.count);
+        const dailyData = userData.daily.map(data => data.count);
+        const weeklyData = userData.weekly.map(data => data.count);
+        const monthlyData = userData.monthly.map(data => data.count);
 
-            const userCtx = document.getElementById('newUsersChart').getContext('2d');
-            new Chart(userCtx, {
-                type: 'line',
-                data: {
-                    labels: Array.from({ length: dailyData.length }, (_, i) => i + 1),
-                    datasets: [{
-                        label: 'New Users Per Day',
-                        data: dailyData,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }, {
-                        label: 'New Users Per Week',
-                        data: weeklyData,
-                        borderColor: 'rgba(153, 102, 255, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }, {
-                        label: 'New Users Per Month',
-                        data: monthlyData,
-                        borderColor: 'rgba(255, 159, 64, 1)',
-                        borderWidth: 1,
-                        fill: false
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
+        const userCtx = document.getElementById('newUsersChart').getContext('2d');
+        new Chart(userCtx, {
+            type: 'line',
+            data: {
+                labels: Array.from({ length: dailyData.length }, (_, i) => i + 1),
+                datasets: [{
+                    label: 'New Users Per Day',
+                    data: dailyData,
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }, {
+                    label: 'New Users Per Week',
+                    data: weeklyData,
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }, {
+                    label: 'New Users Per Month',
+                    data: monthlyData,
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
-            });
-
-            // Fetch top nominees data
-            const nomineesResponse = await fetch('/admin/data/top-nominees');
-            const nomineesData = await nomineesResponse.json();
-
-            const nomineeNames = nomineesData.map(nominee => nominee.name);
-            const nomineeVotes = nomineesData.map(nominee => nominee.count);
-
-            const nomineeCtx = document.getElementById('topNomineesChart').getContext('2d');
-            new Chart(nomineeCtx, {
-                type: 'bar',
-                data: {
-                    labels: nomineeNames,
-                    datasets: [{
-                        label: 'Votes',
-                        data: nomineeVotes,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
-            });
+            }
         });
+
+        // Fetch top nominees data
+        const nomineesResponse = await fetch('/admin/data/top-nominees');
+        if (!nomineesResponse.ok) throw new Error('Network response was not ok');
+        const nomineesData = await nomineesResponse.json();
+        console.log(nomineesData); // Log data
+
+        const nomineeNames = nomineesData.map(nominee => nominee.name);
+        const nomineeVotes = nomineesData.map(nominee => nominee.count);
+
+        const nomineeCtx = document.getElementById('topNomineesChart').getContext('2d');
+        new Chart(nomineeCtx, {
+            type: 'bar',
+            data: {
+                labels: nomineeNames,
+                datasets: [{
+                    label: 'Votes',
+                    data: nomineeVotes,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+    }
+});
+
     </script>
 </body>
 </html>

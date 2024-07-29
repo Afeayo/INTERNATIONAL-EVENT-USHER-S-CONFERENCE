@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const multer = require('multer');
 const AdminRouter = express.Router();
 const User = require('../models/user');
 const Admin = require('../models/admin');
@@ -16,64 +17,19 @@ function isAuthenticated(req, res, next) {
     res.redirect('/admin/login');
 }
 
-// Get new users per day/week/month
-AdminRouter.get('/data/users', async (req, res) => {
-    try {
-        const newUserDaily = await User.aggregate([
-            { $group: { _id: { $dayOfYear: "$createdAt" }, count: { $sum: 1 } } }
-        ]);
-        const newUserWeekly = await User.aggregate([
-            { $group: { _id: { $week: "$createdAt" }, count: { $sum: 1 } } }
-        ]);
-        const newUserMonthly = await User.aggregate([
-            { $group: { _id: { $month: "$createdAt" }, count: { $sum: 1 } } }
-        ]);
+AdminRouter.use(express.json());
+AdminRouter.use(express.urlencoded({ extended: true }));
 
-        const totalUsers = await User.countDocuments();
-
-        res.json({
-            daily: newUserDaily,
-            weekly: newUserWeekly,
-            monthly: newUserMonthly,
-            total: totalUsers
-        });
-    } catch (err) {
-        console.error('Error fetching users data:', err);
-        res.status(500).json({ error: 'Failed to fetch data' });
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/'); // Set the directory for uploads
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname); // Set the filename
     }
 });
-
-// Get total revenue
-AdminRouter.get('/data/total-revenue', async (req, res) => {
-    try {
-        const totalUsers = await User.countDocuments();
-        const totalRevenue = totalUsers * 5000; // 5000 Naira per user
-
-        res.json({ total: totalRevenue });
-    } catch (err) {
-        console.error('Error fetching total revenue:', err);
-        res.status(500).json({ error: 'Failed to fetch revenue' });
-    }
-});
-
-// Get top 10 nominees
-AdminRouter.get('/data/top-nominees', async (req, res) => {
-    try {
-        const topNominees = await Vote.aggregate([
-            { $group: { _id: "$nomineeId", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $limit: 10 },
-            { $lookup: { from: "nominees", localField: "_id", foreignField: "_id", as: "nominee" } },
-            { $unwind: "$nominee" },
-            { $project: { _id: 0, name: "$nominee.name", category: "$nominee.category", count: 1 } }
-        ]);
-
-        res.json(topNominees);
-    } catch (err) {
-        console.error('Error fetching top nominees:', err);
-        res.status(500).json({ error: 'Failed to fetch top nominees' });
-    }
-});
+const upload = multer({ storage: storage });
 
 // Admin login
 AdminRouter.post('/login', async (req, res) => {
@@ -182,13 +138,28 @@ AdminRouter.get('/nominees/edit/:id', isAuthenticated, async (req, res) => {
 });
 
 // Edit nominee submission
-AdminRouter.post('/nominees/edit/:id', isAuthenticated, async (req, res) => {
+AdminRouter.post('/nominees/edit/:id', isAuthenticated, upload.single('image'), async (req, res) => {
     try {
-        const { name, category } = req.body;
+        const { name, category, existingImage } = req.body;
+        const image = req.file;
+
+        if (!name) {
+            console.error('Nominee name is required');
+            return res.status(400).render('admin_edit_nominee', { nominee: req.body, error: 'Nominee name is required' });
+        }
+
         const slug = generateSlug(name);
         const link = `/vote/${slug}`;
 
-        await Nominee.findByIdAndUpdate(req.params.id, { name, category, slug, link });
+        const updateData = {
+            name,
+            category,
+            slug,
+            link,
+            image: image ? `/uploads/${image.filename}` : existingImage
+        };
+
+        await Nominee.findByIdAndUpdate(req.params.id, updateData);
         res.redirect('/admin/nominees');
     } catch (err) {
         console.error('Error updating nominee:', err);
@@ -202,9 +173,17 @@ AdminRouter.get('/nominees/add', isAuthenticated, (req, res) => {
 });
 
 // Add nominee submission
-AdminRouter.post('/nominees/add', async (req, res) => {
+AdminRouter.post('/nominees/add', upload.single('image'), async (req, res) => {
     try {
         const { name, category } = req.body;
+        const image = req.file;
+
+        console.log('Request body:', req.body);
+        if (!name) {
+            console.error('Nominee name is required');
+            return res.status(400).render('admin_add_nominee', { error: 'Nominee name is required' });
+        }
+
         const slug = generateSlug(name);
         const link = `/vote/${slug}`;
 
@@ -212,7 +191,8 @@ AdminRouter.post('/nominees/add', async (req, res) => {
             name,
             category,
             slug,
-            link
+            link,
+            image: image ? `/uploads/${image.filename}` : null
         });
 
         await newNominee.save();
@@ -247,64 +227,45 @@ AdminRouter.post('/nominees/delete', isAuthenticated, async (req, res) => {
     }
 });
 
-// Results page
-AdminRouter.get('/results', isAuthenticated, async (req, res) => {
-    try {
-        const nominees = await Nominee.find();
-        res.render('admin_results', { nominees });
-    } catch (err) {
-        console.error('Error fetching results:', err);
-        res.status(500).render('error', { error: 'Server error' });
-    }
-});
-
-// Download user report
-AdminRouter.get('/download/users', isAuthenticated, async (req, res) => {
-    try {
-        const users = await User.find();
-        const fields = ['_id', 'name', 'email', 'createdAt'];
-        const json2csvParser = new Parser({ fields });
-        const csv = json2csvParser.parse(users);
-
-        res.header('Content-Type', 'text/csv');
-        res.attachment('users_report.csv');
-        return res.send(csv);
-    } catch (err) {
-        console.error('Error downloading user report:', err);
-        res.status(500).send('Server error');
-    }
-});
-
-// Download nominee result
-AdminRouter.get('/download/nominees', isAuthenticated, async (req, res) => {
-    try {
-        const nominees = await Vote.aggregate([
-            { $group: { _id: "$nomineeId", count: { $sum: 1 } } },
-            { $sort: { count: -1 } },
-            { $lookup: { from: "nominees", localField: "_id", foreignField: "_id", as: "nominee" } },
-            { $unwind: "$nominee" },
-            { $project: { _id: 0, name: "$nominee.name", category: "$nominee.category", count: 1 } }
-        ]);
-
-        const fields = ['name', 'category', 'count'];
-        const json2csvParser = new Parser({ fields });
-        const csv = json2csvParser.parse(nominees);
-
-        res.header('Content-Type', 'text/csv');
-        res.attachment('nominees_results.csv');
-        return res.send(csv);
-    } catch (err) {
-        console.error('Error downloading nominee results:', err);
-        res.status(500).send('Server error');
-    }
-});
-
+// Generate slug function
 function generateSlug(text) {
-    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+    return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
+// Export data to CSV
+AdminRouter.get('/export/csv', isAuthenticated, async (req, res) => {
+    try {
+        const { type } = req.query;
+        let data;
+        let fields;
+
+        if (type === 'users') {
+            data = await User.find().lean();
+            fields = ['name', 'email', 'createdAt'];
+        } else if (type === 'nominees') {
+            data = await Nominee.find().lean();
+            fields = ['name', 'category', 'slug', 'link'];
+        } else if (type === 'votes') {
+            data = await Vote.find().populate('userId nomineeId').lean();
+            fields = ['userId.name', 'userId.email', 'nomineeId.name', 'nomineeId.category', 'createdAt'];
+        } else {
+            return res.status(400).json({ error: 'Invalid export type' });
+        }
+
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(data);
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment(`${type}.csv`);
+        res.send(csv);
+    } catch (err) {
+        console.error('Error exporting data to CSV:', err);
+        res.status(500).json({ error: 'Failed to export data' });
+    }
+});
+
 // Admin registration route
-AdminRouter.get('/register', (req, res) => {
+AdminRouter.get('/register',isAuthenticated,async (req, res) => {
     res.render('admin_register', { error: null });
 });
 
@@ -338,5 +299,35 @@ AdminRouter.post('/register', async (req, res) => {
 });
 
 
+
+// Export data to PDF
+AdminRouter.get('/export/pdf', isAuthenticated, async (req, res) => {
+    try {
+        const { type } = req.query;
+        let data;
+
+        if (type === 'users') {
+            data = await User.find().lean();
+        } else if (type === 'nominees') {
+            data = await Nominee.find().lean();
+        } else if (type === 'votes') {
+            data = await Vote.find().populate('userId nomineeId').lean();
+        } else {
+            return res.status(400).json({ error: 'Invalid export type' });
+        }
+
+        const doc = new PDFDocument();
+        res.header('Content-Type', 'application/pdf');
+        res.attachment(`${type}.pdf`);
+
+        doc.pipe(res);
+
+        doc.fontSize(14).text(JSON.stringify(data, null, 2));
+        doc.end();
+    } catch (err) {
+        console.error('Error exporting data to PDF:', err);
+        res.status(500).json({ error: 'Failed to export data' });
+    }
+});
 
 module.exports = AdminRouter;

@@ -1,55 +1,136 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Nominees</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote for <%= nominee.name %></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.js"></script>
     <style>
-        .ui.card img {
-            border-radius: 50%;
-            height: 150px;
-            width: 150px;
-            object-fit: cover;
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
         }
         .ui.container {
-            margin-top: 20px;
+            max-width: 500px;
+            background-color: #000;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            color: #fff;
         }
         .ui.header {
             color: #D4AF37;
+            text-align: center;
         }
-        .ui.button.primary {
-            background-color: #D4AF37;
-            color: #000000;
+        .ui.form img {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
         }
-        .ui.button.primary:hover {
-            background-color: #c49b2e;
+        .ui.placeholder.segment {
+            display: block;
+            margin: 0 auto 20px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        #loader {
+            display: none;
+            border: 16px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 16px solid #D4AF37;
+            width: 120px;
+            height: 120px;
+            animation: spin 2s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @media (max-width: 480px) {
+            .ui.header {
+                font-size: 1.5em;
+            }
+            .ui.form .field label {
+                font-size: 0.9em;
+            }
+            .ui.form .ui.button {
+                font-size: 0.9em;
+            }
         }
     </style>
 </head>
 <body>
     <div class="ui container">
-        <h2 class="ui header">Nominees</h2>
-        <div class="ui three stackable cards">
-            <% nominees.forEach(nominee => { %>
-                <div class="card">
-                    <div class="image">
-                        <% if (nominee.image) { %>
-                            <img src="/<%= nominee.image %>" alt="<%= nominee.name %>">
-                        <% } else { %>
-                            <div class="ui placeholder">
-                                <div class="image"></div>
-                            </div>
-                        <% } %>
-                    </div>
-                    <div class="content">
-                        <div class="header"><%= nominee.name %></div>
-                        <div class="meta"><%= nominee.category %></div>
-                        <div class="description">
-                            <a href="<%= nominee.link %>" class="ui button primary">Vote</a>
-                        </div>
-                    </div>
+        <h2 class="ui header">Vote for <%= nominee.name %></h2>
+        <% if (nominee.image) { %>
+            <img src="<%= nominee.image %>" alt="<%= nominee.name %>">
+        <% } else { %>
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="image icon"></i>
+                    No Image Available
                 </div>
-            <% }); %>
-        </div>
+            </div>
+        <% } %>
+        <p>Category: <%= nominee.category %></p>
+        <form id="voteForm" class="ui form" action="/vote/submit" method="POST">
+            <input type="hidden" name="nomineeId" value="<%= nominee._id %>">
+            <div class="field">
+                <label>Your Name</label>
+                <input type="text" name="voterName" required>
+            </div>
+            <div class="field">
+                <label>Your Email</label>
+                <input type="email" name="voterEmail" required>
+            </div>
+            <button class="ui button" style="background-color: #D4AF37; color: #000;" type="submit">Vote</button>
+        </form>
     </div>
+    <div id="loader"></div>
+    <script>
+        document.getElementById('voteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const loader = document.getElementById('loader');
+            loader.style.display = 'block';
+
+            const formData = new FormData(this);
+            const data = {
+                voterName: formData.get('voterName'),
+                voterEmail: formData.get('voterEmail'),
+                nomineeId: formData.get('nomineeId')
+            };
+
+            fetch('/vote/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.text())
+            .then(data => {
+                loader.style.display = 'none';
+                document.body.innerHTML = data;
+            })
+            .catch(error => {
+                loader.style.display = 'none';
+                console.error('Error:', error);
+            });
+        });
+    </script>
 </body>
 </html>

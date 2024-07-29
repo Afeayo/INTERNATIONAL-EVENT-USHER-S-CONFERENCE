@@ -6,9 +6,10 @@
     <title>INTERNATIONAL EVENT USHER’S CONFERENCE</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
         }
@@ -30,7 +31,7 @@
         }
         .menu-toggle {
             display: none;
-            flex-direction: column;
+            flex-direction:row;
             cursor: pointer;
         }
         .menu-toggle .hamburger {
@@ -53,7 +54,6 @@
             font-size: 16px;
         }
         .bg {
-            background: url('/images/Tips on managing ushers for Ugandan corporate Events.jpeg') no-repeat center center/cover;
             height: 100vh;
             display: flex;
             justify-content: center;
@@ -61,17 +61,50 @@
             text-align: center;
             color: #fff;
             position: relative;
+            overflow: hidden;
         }
         .bg .content {
             position: relative;
             z-index: 1;
-        }
+            background-color: rgba(0,0,0,0.5);
+            padding: 20px, 20px;
+            
+        };
         .bg h1 {
             font-size: 3em;
+            color: white;
+            text-shadow: 20px black;
+            text-decoration: double black 10px;
+            text-align: center;
+        }
+        
+        .bg h1 {
+            font-size: 3em;
+            color: white;
+            text-shadow: 20px black;
+            text-decoration: double black 10px;
+            text-align: center;
         }
         .bg button a {
             color: #fff;
             text-decoration: none;
+        }
+        .bg-slider img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        .bg-slider img.active {
+            opacity: 1;
+            z-index: -1;
+        }
+        .bg-slider img.inactive {
+            opacity: 0;
+            z-index: -2;
         }
         .container {
             display: flex;
@@ -92,8 +125,15 @@
             padding: 20px;
             text-align: center;
             background-color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
         }
-        .wel p, .vote p {
+        .wel, .vote {
+            flex: 1;
+            margin: 10px;
+        }
+        .wel p {
             text-align: justify;
         }
         .vote .slide {
@@ -109,29 +149,21 @@
             position: relative;
         }
         .vote .slider img {
-            width: 100%;
-            height: auto;
+            width: 90%;
+            height: 50vh;
             flex-shrink: 0;
             transition: transform 0.5s ease-in-out;
         }
-        .poll {
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 8px;
-            max-width: 600px;
-            margin: 20px auto;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .poll form {
-            display: flex;
-            flex-direction: column;
-        }
-        .poll form label {
-            margin: 10px 0 5px;
-        }
-        .poll form input, .poll form textarea, .poll form button {
-            padding: 10px;
-            margin-bottom: 10px;
+        
+        button a {
+            color: #fff;
+            text-decoration: none;
+            background-color: #D4AF37;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
         }
         footer {
             background-color: #333;
@@ -143,6 +175,40 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+        .footer-top form {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 20px;
+           
+        }
+        .footer-top form input, form textarea, form button{
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+    
+        }
+        .footer-top form button{
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            color: #fff;
+            text-decoration: none;
+            background-color: #D4AF37;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+    
+        }
+        .footer-top form textarea{
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 6px;
+            
         }
         .footer-top img {
             height: 50px;
@@ -175,11 +241,17 @@
             transform: translate(-50%, -50%);
             z-index: 9999;
         }
+        .thank-you-message {
+            display: none;
+            color: green;
+            font-size: 1.5em;
+        }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         @media (max-width: 768px) {
+            
             .nav-links {
                 display: none;
                 flex-direction: column;
@@ -195,6 +267,12 @@
             }
             .menu-toggle {
                 display: flex;
+            }
+            .wrapper {
+                flex-direction: column;
+            }
+            .wel, .vote {
+                margin: 10px 0;
             }
         }
     </style>
@@ -218,10 +296,16 @@
         </nav>
     </header>
     <section class="bg" id="home">
+        <div class="bg-slider">
+            <img src="/images/Tips on managing ushers for Ugandan corporate Events.jpeg" alt="Slide 1" class="active">
+            <img src="/images/IMG_7920.PNG" alt="Slide 2" class="inactive">
+            <img src="/images/IMG_7922.PNG" alt="Slide 3" class="inactive">
+        </div>
         <div class="content">
+            <h5>welcome To:</h5>
             <h1>INTERNATIONAL EVENT USHER’S CONFERENCE</h1>
             <p>Kindly click to Register for the INTERNATIONAL EVENT USHER’S CONFERENCE 2.0</p>
-            <button type="button"><a href="/user/register">Summit Registration</a></button>
+            <button type="button"><a href="/user/register">Register Now</a></button>
         </div>
     </section>
     <div class="container">
@@ -231,102 +315,106 @@
         </div>
         <div class="box specials">
             <h2>Innovation and Growth</h2>
-            <p>We stand for innovation and the ongoing growth of our industry. By providing a platform for the exchange of ideas, best practices, and emerging trends, we empower ushers to adapt to the ever-changing landscape of event management. Our conference features workshops, seminars, and keynote sessions that inspire creativity and forward-thinking solutions.</p>
+            <p>We stand for innovation and the ongoing growth of our industry. By providing a platform for the exchange of ideas, best practices, and emerging trends, we empower our members to stay ahead in a dynamic and competitive market.</p>
         </div>
-        <div class="box equipment">
-            <h2>Community and Collaboration</h2>
-            <p>We believe in the power of community and the importance of collaboration. The International Event Usher’s Conference fosters a sense of belonging and mutual support among its participants. We encourage networking and the building of meaningful relationships that extend beyond the conference, creating a global network of professionals who support and uplift each other.</p>
+        <div class="box certificates">
+            <h2>Community and Networking</h2>
+            <p>The conference is more than just a series of workshops and seminars; it's a community where ushers from around the world can connect, share experiences, and support one another. Through networking events, group discussions, and collaborative activities, we foster a sense of belonging and mutual growth.</p>
         </div>
     </div>
-    <div class="wrapper" id="about">
-        <div class="wel">
-            <h1>About Us</h1>
-            <p>International Event Usher’s Conference is the premier global gathering for professional event ushers and hospitality experts. Our conference brings together seasoned professionals, industry leaders, and aspiring ushers from around the world to share knowledge, foster networking, and celebrate the art of event ushering. With a focus on excellence, innovation, and community, the International Event Usher’s Conference is dedicated to elevating the standards and practices of event ushering to new heights.</p>
-            <p>Join us at the International Event Usher’s Conference and become part of a community that values excellence, embraces innovation, and thrives on collaboration. Together, we can shape the future of event ushering and set new standards of service for the industry.</p>
-            <button><a href="/user/register">Register Now</a></button>
+    <div class="wrapper">
+        <div class="wel" id="about">
+            <h2>Welcome to the International Event Usher’s Conference</h2>
+            <p>The International Event Usher’s Conference is the premier global gathering for professional event ushers and hospitality experts. Our conference brings together seasoned professionals, industry leaders, and aspiring ushers from around the world to share knowledge, foster networking, and celebrate the art of event ushering. With a focus on excellence, innovation, and community, the International Event Usher’s Conference is dedicated to elevating the standards and practices of event ushering to new heights.
+
+              Join us at the International Event Usher’s Conference and become part of a community that values excellence, embraces innovation, and thrives on collaboration. Together, we can shape the future of event ushering and set new standards of service for the industry.</p>
+              <button type="button"><a href="/user/register">Register Now</a></button>
         </div>
-        <div class="vote slide">
-            <h1>Vote For the Best in the Industry</h1>
-            <div class="slider">
-                <img src="/images/WhatsApp Image 2024-07-23 at 16.08.00_2b4317ab.jpg" alt="Voting Image 1">
-                <img src="/images/WhatsApp Image 2024-07-23 at 16.08.04_31a1276f.jpg" alt="Voting Image 2">
-                <img src="/images/WhatsApp Image 2024-07-24 at 14.32.27_ee827060.jpg" alt="Voting Image 3">
-                <img src="/images/WhatsApp Image 2024-07-24 at 14.32.35_7e62d83a.jpg" alt="Voting Image 4">
+        <div class="vote">
+            <div class="slide">
+                <h2>Vote for Your Favorite Usher</h2>
+                <div class="slider">
+                    <img src="/images/WhatsApp Image 2024-07-23 at 16.08.00_2b4317ab.jpg" alt="Usher 1">
+                    <img src="/images/WhatsApp Image 2024-07-23 at 16.08.04_31a1276f.jpg" alt="Usher 2">
+                    <img src="/images/WhatsApp Image 2024-07-24 at 14.32.27_ee827060.jpg" alt="Usher 3">
+                </div>
                 <button type="button"><a href="/vote">Vote Now</a></button>
             </div>
         </div>
     </div>
-    <div class="poll" id="contact">
-        <h1>Contact Us</h1>
-        <form>
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" rows="4" required></textarea>
-            <button type="submit">Submit</button>
-        </form>
-    </div>
     <footer>
         <div class="footer-top">
-            <h2>Business Summit 2024</h2>
-            <p>Register Now</p>
-            <img src="/images/TEUC logo.png" alt="TEUC Logo">
-            <button type="button"><a href="/user/register">INTERNATIONAL EVENT USHER’S CONFERENCE Summit 2.0</a></button>
+            <h2>Contact Us</h2>
+            <p>  <i class="fa-solid fa-phone-volume"></i>Tel: 07067412527</p> 
+            <p> Email: admin@eventushersconference.com.ng</p>
+            <form action="#" method="#" id="contact-form">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
+                <button type="submit">Submit</button>
+            </form>
+            <img src="/images/TEUC logo.png" alt="logo">
+        </div>
+        <div class="footer-bottom" >
+            <p>&copy; 2024 International Event Usher’s Conference. All rights reserved.</p>
             <div class="social-icons">
                 <a href="#"><i class="fab fa-facebook-f"></i></a>
                 <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
                 <a href="#"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 TEUC. Design By Afe Tech</p>
-        </div>
     </footer>
     <div class="loader" id="loader"></div>
-    <script src="/js/js.js"></script>
     <script>
-        const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
+        document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('contact-form');
+            const loader = document.getElementById('loader');
+            const thankYouMessage = document.getElementById('thank-you-message');
 
-        menuToggle.addEventListener('click', () => {
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    thankYouMessage.textContent = `Thank you, ${name}. We have received your message: "${message}"`;
+                    thankYouMessage.style.display = 'block';
+                    form.reset();
+                    setTimeout(() => {
+                        thankYouMessage.style.display = 'none';
+                    }, 5000);
+                }, 2000);
+            });
+
+
+        document.getElementById('menu-toggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('nav-links');
             navLinks.classList.toggle('active');
         });
 
-        document.querySelector('.poll form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            document.getElementById('loader').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('loader').style.display = 'none';
-                alert('Your message has been sent!');
-                this.reset();
-            }, 2000); // Simulate a delay for email sending
+        document.getElementById('menu-toggle').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('active');
         });
 
-        // Slider functionality
-        const slider = document.querySelector('.vote .slider');
-        const images = slider.querySelectorAll('img');
-        let currentIndex = 0;
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.bg-slider img');
 
-        function showImage(index) {
-            const offset = -index * 100;
-            slider.style.transform = `translateX(${offset}%)`;
+        function showSlides() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active');
+                slide.classList.add('inactive');
+            });
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            slides[slideIndex - 1].classList.add('active');
+            slides[slideIndex - 1].classList.remove('inactive');
+            setTimeout(showSlides, 3000);
         }
 
-        function nextImage() {
-            currentIndex = (currentIndex + 1) % images.length;
-            showImage(currentIndex);
-        }
-
-        function prevImage() {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            showImage(currentIndex);
-        }
-
-        setInterval(nextImage, 3000); // Change image every 3 seconds
+        showSlides();
     </script>
 </body>
 </html>

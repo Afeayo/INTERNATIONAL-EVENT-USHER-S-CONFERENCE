@@ -40,7 +40,7 @@ function createTransporter() {
 async function sendVerificationEmail(email, token) {
     let transporter = createTransporter();
 
-    let verificationLink = `http://localhost:8000/user/register/verify-email?token=${token}&email=${email}`;
+    let verificationLink = `https://eventushersconference.com.ng/user/register/verify-email?token=${token}&email=${email}`;
 
     let mailOptions = {
         from: 'info@nijawiseup.com.ng',
@@ -138,8 +138,8 @@ userRouter.post('/initialize-payment', async (req, res) => {
             'https://api.paystack.co/transaction/initialize',
             {
                 email: email,
-                amount: 10000 * 100, // 10,000 Naira in Kobo
-                callback_url: `http://localhost:8000/user/register/verify-payment?email=${email}`
+                amount: 5000 * 100, // 5,000 Naira in Kobo
+                callback_url: `https://eventushersconference.com.ng/user/register/verify-payment?email=${email}`
             },
             {
                 headers: {
