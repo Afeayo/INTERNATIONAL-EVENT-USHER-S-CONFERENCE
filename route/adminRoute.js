@@ -6,7 +6,7 @@ const User = require('../models/user');
 const Admin = require('../models/admin');
 const Nominee = require('../models/nominee');
 const Vote = require('../models/vote');
-const { Parser } = require('json2csv');
+const { parse } = require('json2csv');
 const PDFDocument = require('pdfkit');
 
 // Middleware to check if admin is authenticated
@@ -232,35 +232,37 @@ function generateSlug(text) {
     return text.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
 }
 
-// Export data to CSV
-AdminRouter.get('/export/csv', isAuthenticated, async (req, res) => {
+
+// Route to handle displaying results
+AdminRouter.get('/results', async (req, res) => {
     try {
-        const { type } = req.query;
-        let data;
-        let fields;
+        const nominees = await Nominee.find().sort({ votes: -1 });
+        res.render('admin_results', { nominees });
+    } catch (err) {
+        console.error('Error fetching results:', err);
+        res.status(500).send('<p>Server error. Please try again later.</p>');
+    }
+});
 
-        if (type === 'users') {
-            data = await User.find().lean();
-            fields = ['name', 'email', 'createdAt'];
-        } else if (type === 'nominees') {
-            data = await Nominee.find().lean();
-            fields = ['name', 'category', 'slug', 'link'];
-        } else if (type === 'votes') {
-            data = await Vote.find().populate('userId nomineeId').lean();
-            fields = ['userId.name', 'userId.email', 'nomineeId.name', 'nomineeId.category', 'createdAt'];
-        } else {
-            return res.status(400).json({ error: 'Invalid export type' });
-        }
+// Export data to CSV
+AdminRouter.get('/download/nominees', async (req, res) => {
+    try {
+        const nominees = await Nominee.aggregate([
+            { $match: {} },
+            { $project: { name: 1, category: 1, votes: 1 } },
+            { $sort: { votes: -1 } }
+        ]);
 
-        const json2csvParser = new Parser({ fields });
-        const csv = json2csvParser.parse(data);
+        const fields = ['name', 'category', 'votes'];
+        const opts = { fields };
+        const csv = parse(nominees, opts); // Correct usage of parse
 
         res.header('Content-Type', 'text/csv');
-        res.attachment(`${type}.csv`);
+        res.attachment('nominees.csv');
         res.send(csv);
     } catch (err) {
-        console.error('Error exporting data to CSV:', err);
-        res.status(500).json({ error: 'Failed to export data' });
+        console.error('Error exporting nominees to CSV:', err);
+        res.status(500).json({ error: 'Failed to export nominees' });
     }
 });
 
@@ -298,36 +300,92 @@ AdminRouter.post('/register', async (req, res) => {
     }
 });
 
-
-
-// Export data to PDF
-AdminRouter.get('/export/pdf', isAuthenticated, async (req, res) => {
+// Route to get new users data
+/*AdminRouter.get('/data/users', isAuthenticated, async (req, res) => {
     try {
-        const { type } = req.query;
-        let data;
+        const dailyData = await User.aggregate([
+            { $group: { _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } }, count: { $sum: 1 } } },
+            { $sort: { "_id": 1 } }
+        ]);
 
-        if (type === 'users') {
-            data = await User.find().lean();
-        } else if (type === 'nominees') {
-            data = await Nominee.find().lean();
-        } else if (type === 'votes') {
-            data = await Vote.find().populate('userId nomineeId').lean();
-        } else {
-            return res.status(400).json({ error: 'Invalid export type' });
-        }
+        const weeklyData = await User.aggregate([
+            { $group: { _id: { $week: "$createdAt" }, count: { $sum: 1 } } },
+            { $sort: { "_id": 1 } }
+        ]);
 
-        const doc = new PDFDocument();
-        res.header('Content-Type', 'application/pdf');
-        res.attachment(`${type}.pdf`);
+        const monthlyData = await User.aggregate([
+            { $group: { _id: { $month: "$createdAt" }, count: { $sum: 1 } } },
+            { $sort: { "_id": 1 } }
+        ]);
 
-        doc.pipe(res);
-
-        doc.fontSize(14).text(JSON.stringify(data, null, 2));
-        doc.end();
+        res.json({ daily: dailyData, weekly: weeklyData, monthly: monthlyData });
     } catch (err) {
-        console.error('Error exporting data to PDF:', err);
-        res.status(500).json({ error: 'Failed to export data' });
+        console.error('Error fetching user data:', err);
+        res.status(500).json({ error: 'Failed to fetch user data' });
+    }
+});*/
+
+// Route to get top nominees data
+AdminRouter.get('/data/top-nominees', isAuthenticated, async (req, res) => {
+    try {
+        const topNominees = await Vote.aggregate([
+            { $group: { _id: "$nomineeId", count: { $sum: 1 } } },
+            { $sort: { count: -1 } },
+            { $limit: 10 },
+            { $lookup: { from: "nominees", localField: "_id", foreignField: "_id", as: "nominee" } },
+            { $unwind: "$nominee" },
+            { $project: { name: "$nominee.name", count: 1 } }
+        ]);
+
+        res.json(topNominees);
+    } catch (err) {
+        console.error('Error fetching top nominees data:', err);
+        res.status(500).json({ error: 'Failed to fetch top nominees data' });
     }
 });
+
+
+
+
+
+/// Route to download users report
+AdminRouter.get('/download/users', isAuthenticated, async (req, res) => {
+    try {
+        const users = await User.find().lean();
+        const fields = ['name', 'email', 'createdAt'];
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(users);
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment('users_report.csv');
+        res.send(csv);
+    } catch (err) {
+        console.error('Error exporting users to CSV:', err);
+        res.status(500).json({ error: 'Failed to export users' });
+    }
+});
+
+
+AdminRouter.get('/download/nominees', isAuthenticated, async (req, res) => {
+    try {
+        const nominees = await Nominee.aggregate([
+            { $lookup: { from: 'votes', localField: '_id', foreignField: 'nomineeId', as: 'votes' } },
+            { $addFields: { totalVotes: { $size: "$votes" } } }
+        ]).lean();
+
+        const fields = ['name', 'category', 'slug', 'link', 'totalVotes'];
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(nominees);
+
+        res.header('Content-Type', 'text/csv');
+        res.attachment('nominees_report.csv');
+        res.send(csv);
+    } catch (err) {
+        console.error('Error exporting nominees to CSV:', err);
+        res.status(500).json({ error: 'Failed to export nominees' });
+    }
+});
+
+
 
 module.exports = AdminRouter;
