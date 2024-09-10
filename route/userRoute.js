@@ -30,15 +30,9 @@ let transporter = nodemailer.createTransport({
     }
 });
 
-// Function to convert name to sentence case
-function toSentenceCase(name) {
-    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-}
 
 // Function to send verification email
 async function sendVerificationEmail(name, email, token) {
-    
-    const formattedName = toSentenceCase(name);
 
     let verificationLink = `https://eventushersconference.com.ng/user/register/verify-email?token=${token}&email=${email}`;
 

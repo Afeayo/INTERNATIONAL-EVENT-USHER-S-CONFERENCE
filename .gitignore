@@ -1,2 +1,13 @@
-.evn
+# Environment variables
+.env
+
+# Dependency directories
+node_modules/
+
+# Log files
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+# Optional, if you don't want to track the package-lock.json
 package-lock.json
