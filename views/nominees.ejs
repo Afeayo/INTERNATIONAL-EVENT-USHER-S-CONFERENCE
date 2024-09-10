@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Nominees</title>
+    <title>Nominees </title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui/dist/semantic.min.css">
     <style>
         .ui.header {
@@ -41,7 +41,7 @@
 </head>
 <body>
     <div class="ui container">
-        <h2 class="ui header">Nominees</h2>
+        <h2 class="ui header">Nominees </h2>
         <table class="ui celled table">
             <thead>
                 <tr>
@@ -57,7 +57,7 @@
                         <td><%= nominee.name %></td>
                         <td><%= nominee.category %></td>
                         <td class="nominee-image-container">
-                            <img class="nominee-image" src="/<%= nominee.image %>" alt="<%= nominee.name %>">
+                            <img src="<%= nominee.image %>" alt="<%= nominee.name %>" class="nominee-image">
                         </td>
                         <td>
                             <a href="/vote/<%= encodeURIComponent(nominee.name.replace(/ /g, '-')) %>" class="ui button primary">Vote</a>

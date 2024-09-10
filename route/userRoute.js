@@ -19,34 +19,50 @@ const agent = new https.Agent({
 function generateToken() {
     return crypto.randomBytes(32).toString('hex');
 }
-
 // Function to create the Nodemailer transporter
-function createTransporter() {
-    return nodemailer.createTransport({
-        host: 'mail.nijawiseup.com.ng', // SMTP server address
-        port: 465, // Port 465 for SSL
-        secure: true, // Set to true for SSL connection
-        auth: {
-            user: process.env.EMAIL_USER, // 
-            pass: process.env.EMAIL_PASS // 
-        },
-        tls: {
-            rejectUnauthorized: false
-        }
-    });
+let transporter = nodemailer.createTransport({
+    host: 'smtp.us.appsuite.cloud',
+    port: 465,
+    secure: true, // Use SSL for port 465
+    auth: {
+        user: process.env.EMAIL_USER,  
+        pass: process.env.EMAIL_PASS    
+    }
+});
+
+// Function to convert name to sentence case
+function toSentenceCase(name) {
+    return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
 }
 
 // Function to send verification email
-async function sendVerificationEmail(email, token) {
-    let transporter = createTransporter();
+async function sendVerificationEmail(name, email, token) {
+    
+    const formattedName = toSentenceCase(name);
 
     let verificationLink = `https://eventushersconference.com.ng/user/register/verify-email?token=${token}&email=${email}`;
 
     let mailOptions = {
-        from: 'info@nijawiseup.com.ng',
+        from: 'info@eventushersconference.com.ng',
         to: email,
-        subject: 'Email Verification',
-        text: `Please click the following link to verify your email: ${verificationLink}`
+        subject: 'Verify Your Email Address',
+        html: `
+            <p>Dear ${name},</p>
+
+            <p>Thank you for registering with <strong>Event Ushers Conference</strong>. To complete your registration and activate your account, please verify your email address by clicking the link below:</p>
+            
+            <a href="${verificationLink}" 
+                    style="background-color:#1a73e8;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">
+                    Verify Email Address
+                </a>
+            
+            <p>If you did not create an account with us, please ignore this email.</p>
+
+            <p>Best regards,</p>
+            <p><strong>Event Ushers Conference Team</strong></p>
+
+            <p style="font-size:12px;color:#888;">This is an automated message, please do not reply to this email. For assistance, contact our support team at info@eventushersconference.com.ng.</p>
+        `
     };
 
     await transporter.sendMail(mailOptions);
@@ -54,8 +70,6 @@ async function sendVerificationEmail(email, token) {
 
 // Function to send registration details email
 const sendRegistrationDetails = async (email, user) => {
-    let transporter = createTransporter();
-
     const gatePass = `
         Name: ${user.name}
         Email: ${user.email}
@@ -64,7 +78,7 @@ const sendRegistrationDetails = async (email, user) => {
     `;
 
     let mailOptions = {
-        from: 'info@nijawiseup.com.ng',
+        from: 'info@eventushersconference.com.ng',
         to: email,
         subject: 'Registration Successful - Your Gate Pass',
         text: `Dear ${user.name},\n\nYour registration was successful! Here are your details:\n\n${gatePass}\n\nThank you for registering!`
@@ -72,7 +86,6 @@ const sendRegistrationDetails = async (email, user) => {
 
     await transporter.sendMail(mailOptions);
 }
-
 // Endpoint to serve the registration page
 userRouter.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'register.html'));
@@ -91,7 +104,7 @@ userRouter.post('/register/initiate', async (req, res) => {
         const token = generateToken();
         tempUsers[email] = { name, email, tel, token, emailVerified: false, paymentVerified: false };
 
-        await sendVerificationEmail(email, token);
+        await sendVerificationEmail(name, email, token);
 
         res.status(200).json({ message: 'Verification email sent. Please check your email to verify.' });
     } catch (error) {
