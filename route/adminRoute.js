@@ -6,8 +6,9 @@ const User = require('../models/user');
 const Admin = require('../models/admin');
 const Nominee = require('../models/nominee');
 const Vote = require('../models/vote');
-const { parse } = require('json2csv');
+const { Parser } = require('json2csv');
 const PDFDocument = require('pdfkit');
+const { parse } = require('json2csv');
 
 // Middleware to check if admin is authenticated
 function isAuthenticated(req, res, next) {
@@ -325,6 +326,9 @@ AdminRouter.post('/register', async (req, res) => {
     }
 });*/
 
+
+
+
 // Route to get top nominees data
 AdminRouter.get('/data/top-nominees', isAuthenticated, async (req, res) => {
     try {
@@ -352,7 +356,7 @@ AdminRouter.get('/data/top-nominees', isAuthenticated, async (req, res) => {
 AdminRouter.get('/download/users', isAuthenticated, async (req, res) => {
     try {
         const users = await User.find().lean();
-        const fields = ['name', 'email', 'createdAt'];
+        const fields = ['name', 'email', 'tel','createdAt'];
         const json2csvParser = new Parser({ fields });
         const csv = json2csvParser.parse(users);
 
