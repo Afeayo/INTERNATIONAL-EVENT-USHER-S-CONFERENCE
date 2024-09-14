@@ -145,7 +145,7 @@ userRouter.post('/initialize-payment', async (req, res) => {
             'https://api.paystack.co/transaction/initialize',
             {
                 email: email,
-                amount: 5000 * 100, // 5,000 Naira in Kobo
+                amount: 10000 * 100, // 
                 callback_url: `https://eventushersconference.com.ng/user/register/verify-payment?email=${email}`
             },
             {
