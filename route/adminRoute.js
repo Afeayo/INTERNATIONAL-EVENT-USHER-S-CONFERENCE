@@ -71,7 +71,7 @@ AdminRouter.get('/logout', (req, res) => {
 AdminRouter.get('/', isAuthenticated, async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
-        const totalRevenue = totalUsers * 5000;
+        const totalRevenue = totalUsers * 10000;
 
         const topNominees = await Vote.aggregate([
             { $group: { _id: "$nomineeId", count: { $sum: 1 } } },

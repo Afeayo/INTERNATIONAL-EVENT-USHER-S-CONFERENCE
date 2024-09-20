@@ -19,19 +19,58 @@
         .main.container .ui.grid {
             margin-top: 2em;
         }
-        .ui.card {
-            margin-top: 2em;
-        }
-        .chart-container {
-            position: relative;
-            height: 400px;
-        }
-        .ui.left.fixed.vertical.menu {
-            width: 250px;
-        }
-        .ui.main.container {
-            margin-left: 275px;
-        }
+        body {
+    background-color: #f9f9f9;
+    font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.ui.menu .item img.logo {
+    margin-right: 1.5em;
+}
+
+.ui.left.fixed.vertical.menu {
+    width: 250px; /* Sidebar width */
+}
+
+
+.ui.main.container {
+    margin-left: 270px;
+    padding: 2em; 
+}
+
+
+.ui.grid {
+    margin-top: 2em;
+}
+
+.ui.card, .chart-container {
+    margin-top: 2em;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+    .ui.left.fixed.vertical.menu {
+        width: 100%; /* Full width on small screens */
+        position: relative;
+    }
+
+    .ui.main.container {
+        margin-left: 0;
+        padding-top: 1em;
+    }
+
+    .chart-container {
+        height: 300px; /* Adjust chart size for smaller screens */
+    }
+}
+
     </style>
 </head>
 <body>

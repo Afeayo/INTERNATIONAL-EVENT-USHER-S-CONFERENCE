@@ -6,6 +6,8 @@ const User = require('../models/user');
 const path = require('path');
 const crypto = require('crypto');
 const https = require('https');
+const { styleText } = require('util');
+const { color, getRelativePosition } = require('chart.js/helpers');
 const userRouter = express.Router();
 
 let tempUsers = {};
@@ -25,8 +27,8 @@ let transporter = nodemailer.createTransport({
     port: 465,
     secure: true, // Use SSL for port 465
     auth: {
-        user: process.env.EMAIL_USER,  
-        pass: process.env.EMAIL_PASS    
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
@@ -41,7 +43,7 @@ async function sendVerificationEmail(name, email, token) {
         to: email,
         subject: 'Verify Your Email Address',
         html: `
-            <p>Dear ${name},</p>
+            <p>Dear ${name},</p> 
 
             <p>Thank you for registering with <strong>Event Ushers Conference</strong>. To complete your registration and activate your account, please verify your email address by clicking the link below:</p>
             
@@ -53,7 +55,8 @@ async function sendVerificationEmail(name, email, token) {
             <p>If you did not create an account with us, please ignore this email.</p>
 
             <p>Best regards,</p>
-            <p><strong>Event Ushers Conference Team</strong></p>
+            <p><strong>International Conference For Event Usher 
+ICEU Team</strong></p>
 
             <p style="font-size:12px;color:#888;">This is an automated message, please do not reply to this email. For assistance, contact our support team at info@eventushersconference.com.ng.</p>
         `
@@ -70,12 +73,22 @@ const sendRegistrationDetails = async (email, user) => {
         Tel: ${user.tel}
         Unique ID: ${user._id}
     `;
-
+    let JoinWhatsappLink=`https://chat.whatsapp.com/ESwZmF3wyh0FItuMo7DBPp`
     let mailOptions = {
         from: 'info@eventushersconference.com.ng',
         to: email,
         subject: 'Registration Successful - Your Gate Pass',
-        text: `Dear ${user.name},\n\nYour registration was successful! Here are your details:\n\n${gatePass}\n\nThank you for registering!`
+        text: `Dear ${user.name},\n\nYour registration was successful! Here are your details:\n\n${gatePass}\n\n Thank you for registering and completing your payment for the International Conference for Event Ushers! Your spot is confirmed.
+
+To stay updated with important event details and connect with fellow participants, please join our official WhatsApp group using the link below:  
+
+<a href="${JoinWhatsappLink}" 
+                    style="background-color:#56d437;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">
+                    Verify Email Address
+                </a>
+
+
+We look forward to seeing you on Tuesday, 15th October 2024, at THE EVENT WAREHOUSE, Ilupeju, Lagos. Get ready for an unforgettable experience!`
     };
 
     await transporter.sendMail(mailOptions);
