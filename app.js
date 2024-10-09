@@ -4,7 +4,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-
 const voteRouter = require('./route/voteRoute');
 const adminRouter = require('./route/adminRoute');
 const nomineeRouter = require('./route/nomineeRoute');
