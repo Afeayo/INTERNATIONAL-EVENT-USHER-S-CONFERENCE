@@ -66,11 +66,21 @@ const sendRegistrationDetails = async (email, user) => {
         from: 'info@eventushersconference.com.ng',
         to: email,
         subject: 'Registration Successful - Your Gate Pass',
-        text: `Dear ${user.name},\n\nYour registration was successful! Here are your details:\n\n${gatePass}\n\nThank you for registering! Join our WhatsApp group using the link below:\n\n${JoinWhatsappLink}\n\nWe look forward to seeing you at the event!`
+        html: `
+            <p>Dear ${user.name},</p>
+            <p>Your registration was successful! Here are your details:</p>
+            <p>${gatePass.replace(/\n/g, '<br>')}</p>
+            <p>Thank you for registering! Join our WhatsApp group using the button below:</p>
+            <a href="${JoinWhatsappLink}" style="background-color:#25D366;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;">
+                Join WhatsApp Group
+            </a>
+            <p>We look forward to seeing you at the event!</p>
+        `
     };
 
     await transporter.sendMail(mailOptions);
 };
+
 
 // Endpoint to serve the registration page
 userRouter.get('/register', (req, res) => {
