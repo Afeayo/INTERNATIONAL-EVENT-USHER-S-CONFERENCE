@@ -60,7 +60,7 @@ const sendRegistrationDetails = async (email, user) => {
         Tel: ${user.tel}
         Unique ID: ${user._id}
     `;
-    let JoinWhatsappLink = `https://chat.whatsapp.com/ESwZmF3wyh0FItuMo7DBPp`;
+    let JoinWhatsappLink = `https://chat.whatsapp.com/B8Rh0qa1LwRAVFxvFjZGtz`;
     
     let mailOptions = {
         from: 'info@eventushersconference.com.ng',

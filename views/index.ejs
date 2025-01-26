@@ -1,644 +1,749 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>INTERNATIONAL EVENT USHER’S CONFERENCE</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+
+
     <style>
-        body {
-            font-family: 'Great Vibes', ;
-            margin: 0;
-            padding: 0;
-            letter-spacing: normal;  /* Adjust or set to normal */
-            word-spacing: normal;    /* Set to normal for no extra word spacing */
-        }
+      body {
+        font-family: "Great Vibes";
+        margin: 0;
+        padding: 0;
+        letter-spacing: normal; /* Adjust or set to normal */
+        word-spacing: normal; /* Set to normal for no extra word spacing */
+      }
 
-        .icon {
-            font-size: 2rem;
-            /* Adjust size */
-            color: #D4AF37;
-            /* Gold color */
-            transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
+      .icon {
+        font-size: 2rem;
+        /* Adjust size */
+        color: #d4af37;
+        /* Gold color */
+        transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+      }
 
-        .icon:hover {
-            transform: scale(1.2);
-            /* Enlarge on hover */
-            color: #FFD700;
-            /* Brighter gold on hover */
-        }
+      .icon:hover {
+        transform: scale(1.2);
+        /* Enlarge on hover */
+        color: #ffd700;
+        /* Brighter gold on hover */
+      }
 
-        .icon-container {
-            text-align: center;
-            /* Center the icon */
-            margin-bottom: 1rem;
-        }
+      .icon-container {
+        text-align: center;
+        /* Center the icon */
+        margin-bottom: 1rem;
+      }
 
+      header {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 0;
+      }
 
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-        }
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
 
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+      .logo img {
+        height: 50px;
+      }
 
-        .logo img {
-            height: 50px;
-        }
+      .menu-toggle {
+        display: none;
+        cursor: pointer;
+      }
 
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-        }
+      .menu-toggle .hamburger {
+        width: 25px;
+        height: 3px;
+        background-color: #fff;
+        margin: 5px 0;
+      }
 
-        .menu-toggle .hamburger {
-            width: 25px;
-            height: 3px;
-            background-color: #fff;
-            margin: 5px 0;
-        }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        padding: 0;
+      }
 
-        .nav-links {
-            list-style: none;
-            display: flex;
-            padding: 0;
-        }
+      .nav-links li {
+        margin: 0 15px;
+      }
 
-        .nav-links li {
-            margin: 0 15px;
-        }
+      .nav-links a {
+        color: #d4af37;
+        text-decoration: none;
+        font-size: 16px;
+      }
 
-        .nav-links a {
-            color: #D4AF37;
-            text-decoration: none;
-            font-size: 16px;
-        }
+      .bg {
+        height: 100vh;
+        /* Full viewport height */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+      }
 
+      p {
+        margin: 10px 0;
+        /* Adjust as needed */
+        line-height: 1;
+        /* You can reduce this if the spacing is still too much */
+        text-align: justify;
+
+        /* If you want all paragraphs to be justified */
+
+        word-spacing: 0px;
+        /* Adjust the value as needed */
+        letter-spacing: 0px;
+
+        padding: 0px;
+        /* Space inside the element around the text */
+      }
+
+      .bg .content {
+        position: relative;
+        z-index: 1;
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        /* Update padding */
+        line-height: 1.5;
+        /* Reduce spacing between lines */
+      }
+
+      .bg h1 {
+        font-size: 2.5em;
+        /* Reduce font size */
+        color: #d4af37;
+        /* Use your gold color */
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+        /* Add a softer shadow */
+        text-align: center;
+        margin: 10px 0;
+        /* Reduce the margin */
+      }
+
+      .bg button a {
+        color: #fff;
+        text-decoration: none;
+      }
+
+      .bg-slider {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+      }
+
+      .bg-slider img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        position: absolute;
+        top: 0;
+        left: 0;
+        transition: opacity 1s ease-in-out;
+      }
+
+      .bg-slider img.active {
+        opacity: 1;
+        z-index: 1;
+      }
+
+      .bg-slider img.inactive {
+        opacity: 0;
+        z-index: 0;
+      }
+
+      .icon {
+        font-size: 2rem;
+        /* Adjust size */
+        color: #d4af37;
+        /* Gold color */
+        transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+      }
+
+      .icon:hover {
+        transform: scale(1.2);
+        /* Enlarge on hover */
+        color: #ffd700;
+        /* Brighter gold on hover */
+      }
+
+      .icon-container {
+        text-align: center;
+        /* Center the icon */
+        margin-bottom: 1rem;
+      }
+
+      @media (max-width: 768px) {
         .bg {
-            height: 100vh;
-            /* Full viewport height */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #fff;
-            position: relative;
-            overflow: hidden;
-        }
-
-        p {
-            margin: 10px 0;
-            /* Adjust as needed */
-            line-height: 1.0;
-            /* You can reduce this if the spacing is still too much */
-            text-align: justify;
-
-            /* If you want all paragraphs to be justified */
-
-            word-spacing: 0px;
-            /* Adjust the value as needed */
-            letter-spacing: 0px;
-
-            padding: 0px;
-            /* Space inside the element around the text */
-            
-        }
-
-        .bg .content {
-            position: relative;
-            z-index: 1;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 20px;
-            /* Update padding */
-            line-height: 1.5;
-            /* Reduce spacing between lines */
-        }
-
-        .bg h1 {
-            font-size: 2.5em;
-            /* Reduce font size */
-            color: #D4AF37;
-            /* Use your gold color */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
-            /* Add a softer shadow */
-            text-align: center;
-            margin: 10px 0;
-            /* Reduce the margin */
-        }
-
-        .bg button a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .bg-slider {
-            width: 100%;
-            height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            overflow: hidden;
+          height: 80vh;
+          /* Adjust height for smaller screens if needed */
         }
 
         .bg-slider img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-            transition: opacity 1s ease-in-out;
+          height: auto;
+          /* Maintain aspect ratio on smaller screens */
+        }
+      }
+
+      .container {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin: 20px auto;
+        max-width: 1200px;
+      }
+
+      .box {
+        flex: 1;
+        margin: 10px;
+        padding: 20px;
+        background-color: #f4f4f4;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      .wrapper {
+        padding: 20px;
+        text-align: center;
+        background-color: #fff;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      .wel,
+      .vote {
+        flex: 1;
+        margin: 10px;
+        color: #d4af37;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .wel p {
+        text-align: justify;
+        color: black;
+      }
+
+      .vote .slide {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .vote .slider {
+        display: flex;
+        overflow: hidden;
+        width: 100%;
+        max-width: 600px;
+        position: relative;
+      }
+
+      .vote .slider img {
+        width: 90%;
+        height: 50vh;
+        flex-shrink: 0;
+        transition: transform 0.5s ease-in-out;
+      }
+
+      button a {
+        color: #fff;
+        text-decoration: none;
+        background-color: #d4af37;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      footer {
+        background-color: #333;
+        color: #d4af37;
+        text-align: center;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .footer-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-top form {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 800px;
+        margin-bottom: 20px;
+      }
+
+      .footer-top form input,
+      form textarea,
+      form button {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+      }
+
+      .footer-top form button {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 6px;
+        color: #fff;
+        text-decoration: none;
+        background-color: #d4af37;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .footer-top form textarea {
+        padding: 30px;
+        margin-bottom: 30px;
+        border-radius: 6px;
+      }
+
+      .footer-top img {
+        height: 50px;
+        margin: 10px 0;
+      }
+
+      .footer-bottom {
+        margin-top: 20px;
+      }
+
+      .social-icons {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+      }
+
+      .social-icons a {
+        color: #fff;
+        font-size: 20px;
+        margin: 0 10px;
+      }
+
+      .loader {
+        display: none;
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+      }
+
+      .thank-you-message {
+        display: none;
+        color: green;
+        font-size: 1.5em;
+      }
+
+      #particles-js {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        z-index: 0;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        /* So it doesn't block other elements */
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
 
-        .bg-slider img.active {
-            opacity: 1;
-            z-index: 1;
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background-color: #333;
+          position: absolute;
+          top: 70px;
+          left: 0;
+          text-align: center;
         }
 
-        .bg-slider img.inactive {
-            opacity: 0;
-            z-index: 0;
+        .nav-links.active {
+          display: flex;
         }
 
-        .icon {
-            font-size: 2rem;
-            /* Adjust size */
-            color: #D4AF37;
-            /* Gold color */
-            transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
-        }
-
-        .icon:hover {
-            transform: scale(1.2);
-            /* Enlarge on hover */
-            color: #FFD700;
-            /* Brighter gold on hover */
-        }
-
-        .icon-container {
-            text-align: center;
-            /* Center the icon */
-            margin-bottom: 1rem;
-        }
-
-
-        @media (max-width: 768px) {
-            .bg {
-                height: 80vh;
-                /* Adjust height for smaller screens if needed */
-            }
-
-            .bg-slider img {
-                height: auto;
-                /* Maintain aspect ratio on smaller screens */
-            }
-        }
-
-        .container {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin: 20px auto;
-            max-width: 1200px;
-        }
-
-        .box {
-            flex: 1;
-            margin: 10px;
-            padding: 20px;
-            background-color: #f4f4f4;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        .menu-toggle {
+          display: flex;
         }
 
         .wrapper {
-            padding: 20px;
-            text-align: center;
-            background-color: #fff;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
+          flex-direction: column;
         }
 
         .wel,
         .vote {
-            flex: 1;
-            margin: 10px;
-            color: #D4AF37;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+          margin: 10px 0;
         }
+      }
 
-        .wel p {
-            text-align: justify;
-            color: black;
-        }
+      .slider-container {
+  width: 100%;
+  max-width: 600px;
+  margin: auto;
+  overflow: hidden;
+  position: relative;
+}
 
-        .vote .slide {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+.slider-container .swiper {
+  width: 100%;
+  height: 100%;
+}
 
-        .vote .slider {
-            display: flex;
-            overflow: hidden;
-            width: 100%;
-            max-width: 600px;
-            position: relative;
-        }
+.slider-container .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 300px; /* Adjust as needed */
+}
 
-        .vote .slider img {
-            width: 90%;
-            height: 50vh;
-            flex-shrink: 0;
-            transition: transform 0.5s ease-in-out;
-        }
+.slider-container img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
-        button a {
-            color: #fff;
-            text-decoration: none;
-            background-color: #D4AF37;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        footer {
-            background-color: #333;
-            color: #D4AF37;
-            text-align: center;
-            padding: 20px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .footer-top {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .footer-top form {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 800px;
-            margin-bottom: 20px;
-
-        }
-
-        .footer-top form input,
-        form textarea,
-        form button {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-
-        }
-
-        .footer-top form button {
-            padding: 10px;
-            margin-bottom: 10px;
-            border-radius: 6px;
-            color: #fff;
-            text-decoration: none;
-            background-color: #D4AF37;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-
-        }
-
-        .footer-top form textarea {
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 6px;
-
-        }
-
-        .footer-top img {
-            height: 50px;
-            margin: 10px 0;
-        }
-
-        .footer-bottom {
-            margin-top: 20px;
-        }
-
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .social-icons a {
-            color: #fff;
-            font-size: 20px;
-            margin: 0 10px;
-        }
-
-        .loader {
-            display: none;
-            border: 16px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 16px solid #3498db;
-            width: 120px;
-            height: 120px;
-            animation: spin 2s linear infinite;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-        }
-
-        .thank-you-message {
-            display: none;
-            color: green;
-            font-size: 1.5em;
-        }
-
-        #particles-js {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            background-color: transparent;
-            z-index: 0;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-            /* So it doesn't block other elements */
-        }
-
-
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        @media (max-width: 768px) {
-
-            .nav-links {
-                display: none;
-                flex-direction: column;
-                width: 100%;
-                background-color: #333;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                text-align: center;
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .wrapper {
-                flex-direction: column;
-            }
-
-            .wel,
-            .vote {
-                margin: 10px 0;
-            }
-        }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <header>
-        <nav>
-            <div class="logo">
-                <img src="/images/ICEU.png" alt="logo">
-            </div>
-            <div class="menu-toggle" id="menu-toggle">
-                <div class="hamburger"></div>
-                <div class="hamburger"></div>
-                <div class="hamburger"></div>
-            </div>
-            <ul class="nav-links" id="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+      <nav>
+        <div class="logo">
+          <img src="/images/ICEU.png" alt="logo" />
+        </div>
+        <div class="menu-toggle" id="menu-toggle">
+          <div class="hamburger"></div>
+          <div class="hamburger"></div>
+          <div class="hamburger"></div>
+        </div>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
     </header>
 
-
-
     <section class="bg" id="home">
-        <div class="bg-slider">
-            <img src="/images/Tips on managing ushers for Ugandan corporate Events.jpeg" alt="Slide 1" class="active">
-            <img src="/images/IMG_7920.PNG" alt="Slide 2" class="inactive">
-            <img src="/images/IMG_7922.PNG" alt="Slide 3" class="inactive">
-        </div>
-        <div class="content">
-            <h5>welcome To:</h5>
-            <h1> INTERNATIONAL CONFERENCE FOR EVENT USHERS 2.0</h1>
-            <!--<p>Kindly click to Register for the INTERNATIONAL CONFERENCE FOR EVENT USHERS 1.0</p>-->
-            <button type="button" id="submit"><a href="/user/register">Register Now</a></button>
-        </div>
+      <div class="bg-slider">
+        <img
+          src="/images/Tips on managing ushers for Ugandan corporate Events.jpeg"
+          alt="Slide 1"
+          class="active"
+        />
+        <img src="/images/IMG_7920.PNG" alt="Slide 2" class="inactive" />
+        <img src="/images/IMG_7922.PNG" alt="Slide 3" class="inactive" />
+      </div>
+      <div class="content">
+        <h5>welcome To:</h5>
+        <h1>INTERNATIONAL CONFERENCE FOR EVENT USHERS 2.0</h1>
+        <!--<p>Kindly click to Register for the INTERNATIONAL CONFERENCE FOR EVENT USHERS 1.0</p>-->
+        <button type="button" id="submit">
+          <a href="/user/register">Register Now</a>
+        </button>
+      </div>
     </section>
     <div class="container">
-        <div id="particles-js"></div>
-        <div class="container">
-            <div class="box technology">
-                <h2>Excellence in Service</h2>
-                    <p>At the International Conference For Event Ushers, we are committed to promoting the highest
-                        standards
-                        of service and professionalism in the usheringindustry. We believe that excellence is achieved
-                        through continuous learning, skill enhancement, and a dedication to delivering exceptional
-                        experiences for every guest.</p>
-            </div>
-            <div class="box specials">
-                <h2>Innovation and Growth</h2>
-                    <p style="text-align: justify;">We stand for innovation and the ongoing growth of our industry. By
-                        providing a platform for the exchange of ideas, best practices, and emerging trends, we empower
-                        our
-                        members to stay ahead in a dynamic and competitive market.</p>
-            </div>
-            <div class="box certificates">
-                <h2>Community and Networking</h2>
-                    <p>The conference is more than just a series of workshops and seminars;
-                        it's a community where ushers from around the world can connect, share experiences, and support
-                        one
-                        another. Through networking events, group discussions, and collaborative activities, we foster a
-                        sense of belonging and mutual growth.</p>
-            </div>
+      <div id="particles-js"></div>
+      <div class="container">
+        <div class="box technology">
+          <h2>Excellence in Service</h2>
+          <p>
+            At the International Conference For Event Ushers, we are committed
+            to promoting the highest standards of service and professionalism in
+            the usheringindustry. We believe that excellence is achieved through
+            continuous learning, skill enhancement, and a dedication to
+            delivering exceptional experiences for every guest.
+          </p>
         </div>
-        <div class="wrapper">
-            <div class="wel" id="about">
-                <h2>Welcome to the International Conference For Event Ushers </h2>
-                    <p>The International Conference For Event Ushers is the premier global gathering for professional
-                        event ushers and hospitality experts. Our conference brings together seasoned professionals,
-                        industry
-                        leaders, and aspiring ushers from around the world to share knowledge, foster networking, and
-                        celebrate the art of event ushering.</p>
-                    <p>With a focus on excellence, innovation, and community, the
-                        International Event Usher’s Conference is dedicated to elevating the standards and practices of
-                        event ushering to new heights.
+        <div class="box specials">
+          <h2>Innovation and Growth</h2>
+          <p style="text-align: justify">
+            We stand for innovation and the ongoing growth of our industry. By
+            providing a platform for the exchange of ideas, best practices, and
+            emerging trends, we empower our members to stay ahead in a dynamic
+            and competitive market.
+          </p>
+        </div>
+        <div class="box certificates">
+          <h2>Community and Networking</h2>
+          <p>
+            The conference is more than just a series of workshops and seminars;
+            it's a community where ushers from around the world can connect,
+            share experiences, and support one another. Through networking
+            events, group discussions, and collaborative activities, we foster a
+            sense of belonging and mutual growth.
+          </p>
+        </div>
+      </div>
+      <div class="wrapper">
+        <div class="wel" id="about">
+          <h2>Welcome to the International Conference For Event Ushers</h2>
+          <p>
+            The International Conference For Event Ushers is the premier global
+            gathering for professional event ushers and hospitality experts. Our
+            conference brings together seasoned professionals, industry leaders,
+            and aspiring ushers from around the world to share knowledge, foster
+            networking, and celebrate the art of event ushering.
+          </p>
+          <p>
+            With a focus on excellence, innovation, and community, the
+            International Event Usher’s Conference is dedicated to elevating the
+            standards and practices of event ushering to new heights. Join us at
+            the International Conference For Event Ushers and become part of a
+            community that values excellence, embraces innovation, and thrives
+            on collaboration. Together, we can shape the future of event
+            ushering and set new standards of service for the industry.
+          </p>
+          <button type="button">
+            <a href="/user/register">Register Now</a>
+          </button>
+        </div>
+        <div class="vote">
+          <div class="slide">
+            <h2>Beyond Ushering, February 4th, 2025</h2>
+            <div class="slider">
+              <img
+                src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg"
+                alt="Usher 1"
+              />
+              <img
+                src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg"
+                alt="Usher 2"
+              />
+              <img
+                src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg"
+                alt="Usher 3"
+              />
+            </div>
+            <button type="button">
+              <a href="/user/register">Register Now</a>
+            </button>
+          </div>
+        </div>
+</div>  
 
-                        Join us at the International Conference For Event Ushers and become part of a community that
-                        values
-                        excellence, embraces innovation, and thrives on collaboration. Together, we can shape the future
-                        of
-                        event ushering and set new standards of service for the industry.</p>
-                    <button type="button"><a href="/user/register">Register Now</a></button>
-            </div>
-            <div class="vote">
-                <div class="slide">
-                    <h2>Beyond Ushering, February 4th, 2025</h2>
-                    <div class="slider">
-                        <img src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg" alt="Usher 1">
-                        <img src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg" alt="Usher 2">
-                        <img src="/images/90184be9-a2cf-4dfc-b524-e11cf8b5ac12.jpeg" alt="Usher 3">
-                    </div>
-                    <button type="button"><a href="/user/register">Register Now</a></button>
-                </div>
-            </div>
-        </div>
+<div class="slider-container">
+  <h3>INTERNATIONAL CONFERENCE FOR EVENT USHERS 1.0</h3>
+  <div class="swiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="/images/OAPL2115.jpg" alt="Slide 1"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2134.jpg" alt="Slide 2"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2151.jpg" alt="Slide 3"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2153.jpg" alt="Slide 1"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2184.jpg" alt="Slide 2"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2204.jpg" alt="Slide 3"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2153.jpg" alt="Slide 3"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2216.jpg" alt="Slide 1"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2212.jpg" alt="Slide 2"></div>
+      <div class="swiper-slide"><img src="/images/OAPL2294.jpg" alt="Slide 3"></div>
     </div>
+    <!-- Add Swiper navigation -->
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <!-- Add pagination -->
+    <div class="swiper-pagination"></div>
+  </div>
+
+ </div>
+
+
+    
     <footer>
-        <div class="footer-top">
-            <h2>Contact Us</h2>
-            <p> <i class="fa-solid fa-phone-volume"></i>Tel: 07067412527</p>
-            <p> Email: admin@eventushersconference.com.ng</p>
-            <form action="#" method="#" id="contact-form">
-                <label for="name">Name</label>
-                <input type="text" id="name" name="name" required>
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" required>
-                <label for="message">Message</label>
-                <textarea id="message" name="message" rows="4" required></textarea>
-                <button type="submit">Submit</button>
-            </form>
-            <img src="/images/ICEU.png" alt="logo">
+      <div class="footer-top">
+        <h2>Contact Us</h2>
+        <p><i class="fa-solid fa-phone-volume"></i>Tel: 07067412527</p>
+        <p>Email: admin@eventushersconference.com.ng</p>
+        <form action="#" method="#" id="contact-form">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required />
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required />
+          <label for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required></textarea>
+          <button type="submit">Submit</button>
+        </form>
+        <img src="/images/ICEU.png" alt="logo" />
+      </div>
+      <div class="footer-bottom">
+        <p>
+          &copy; 2024 International Conference For Event Ushers. All rights
+          reserved.
+        </p>
+        <div class="social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
-        <div class="footer-bottom">
-            <p>&copy; 2024 International Conference For Event Ushers. All rights reserved.</p>
-            <div class="social-icons">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
-        </div>
+      </div>
     </footer>
     <div id="particles-js"></div>
     <div class="loader" id="loader"></div>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const form = document.getElementById('contact-form');
-            const loader = document.getElementById('loader');
-            const thankYouMessage = document.getElementById('thank-you-message');
+      document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("contact-form");
+        const loader = document.getElementById("loader");
+        const thankYouMessage = document.getElementById("thank-you-message");
 
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const message = document.getElementById('message').value;
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const message = document.getElementById("message").value;
 
-            setTimeout(() => {
-                loader.style.display = 'none';
-                thankYouMessage.textContent = `Thank you, ${name}. We have received your message: "${message}"`;
-                thankYouMessage.style.display = 'block';
-                form.reset();
-                setTimeout(() => {
-                    thankYouMessage.style.display = 'none';
-                }, 5000);
-            }, 2000);
-        });
+        setTimeout(() => {
+          loader.style.display = "none";
+        thankYouMessage.textContent = `Thank you, ${name}. We have received your message: "${message}"`;
+          thankYouMessage.style.display = "block";
+          form.reset();
+          setTimeout(() => {
+            thankYouMessage.style.display = "none";
+          }, 5000);
+        }, 2000);
+      });
 
-        document.getElementById('menu-toggle').addEventListener('click', function () {
-            const navLinks = document.getElementById('nav-links');
-            navLinks.classList.toggle('active');
-        });
-       /*document.getElementById('submit').onclick=function(){
+     /* document
+        .getElementById("menu-toggle")
+        .addEventListener("click", function () {
+          const navLinks = document.getElementById("nav-links");
+          navLinks.classList.toggle("active");
+        });*/
+        document.querySelector('.menu-toggle').addEventListener('click', () => {
+  document.querySelector('.nav-links').classList.toggle('active');
+});
+
+      /*document.getElementById('submit').onclick=function(){
             alert('We apologize, but registration for this year event is now closed. Thank you for your interest. Please keep an eye out for announcements regarding next year registration period.')
         }
 */
+      let slideIndex = 0;
+      const slides = document.querySelectorAll(".bg-slider img");
 
-
-        let slideIndex = 0;
-        const slides = document.querySelectorAll('.bg-slider img');
-
-        function showSlides() {
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active');
-                slide.classList.add('inactive');
-            });
-            slideIndex++;
-            if (slideIndex > slides.length) { slideIndex = 1 }
-            slides[slideIndex - 1].classList.add('active');
-            slides[slideIndex - 1].classList.remove('inactive');
-            setTimeout(showSlides, 3000);
-        }
-
-        showSlides();
-
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 100,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#D4AF37"  // Golden color
-                },
-                "shape": {
-                    "type": "circle"
-                },
-                "opacity": {
-                    "value": 0.5
-                },
-                "size": {
-                    "value": 3
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "repulse"
-                    }
-                }
-            }
+      function showSlides() {
+        slides.forEach((slide, index) => {
+          slide.classList.remove("active");
+          slide.classList.add("inactive");
         });
+        slideIndex++;
+        if (slideIndex > slides.length) {
+          slideIndex = 1;
+        }
+        slides[slideIndex - 1].classList.add("active");
+        slides[slideIndex - 1].classList.remove("inactive");
+        setTimeout(showSlides, 3000);
+      }
 
+      showSlides();
+
+
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const swiper = new Swiper('.swiper', {
+      loop: true, // Enable looping of slides
+      autoplay: {
+        delay: 3000, // 3-second interval
+        disableOnInteraction: false,
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  });
+
+
+      particlesJS("particles-js", {
+        particles: {
+          number: {
+            value: 100,
+            density: {
+              enable: true,
+              value_area: 800,
+            },
+          },
+          color: {
+            value: "#D4AF37", // Golden color
+          },
+          shape: {
+            type: "circle",
+          },
+          opacity: {
+            value: 0.5,
+          },
+          size: {
+            value: 3,
+          },
+          move: {
+            enable: true,
+            speed: 2,
+          },
+        },
+        interactivity: {
+          detect_on: "canvas",
+          events: {
+            onhover: {
+              enable: true,
+              mode: "repulse",
+            },
+          },
+        },
+      });
     </script>
-</body>
-
+  </body>
 </html>
