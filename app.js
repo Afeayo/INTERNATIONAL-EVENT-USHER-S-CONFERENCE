@@ -25,7 +25,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
-    secret: 'AfeAyo28js872', // Replace with your own secret
+    secret: 'AfeAyo28js872', 
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
@@ -46,7 +46,12 @@ app.get('/', (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 8000;
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => {
+        console.log('Connected to MongoDB Atlas');
+    })
+    .catch((error) => {
+        console.error('MongoDB error:', error);
+        process.exit(1); // ensures clean failure instead of weird loop
+    });
+    console.log("MONGO_URI:", process.env.MONGO_URI);
