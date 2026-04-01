@@ -17,7 +17,7 @@ export {default as ArcElement, ArcProps} from '../elements/element.arc.js';
 export {default as PointElement, PointProps} from '../elements/element.point.js';
 export {Animation, Animations, Animator, AnimationEvent} from './animation.js';
 export {Color} from './color.js';
-export {ChartArea, Point} from './geometric.js';
+export {ChartArea, Point, TRBL} from './geometric.js';
 export {LayoutItem, LayoutPosition} from './layout.js';
 
 export interface ScriptableContext<TType extends ChartType> {
@@ -281,7 +281,7 @@ export interface DoughnutControllerDatasetOptions
   spacing: number;
 }
 
-export interface DoughnutAnimationOptions {
+export interface DoughnutAnimationOptions extends AnimationSpec<'doughnut'> {
   /**
    *   If true, the chart will animate in with a rotation animation. This property is in the options.animation object.
    * @default true
@@ -429,6 +429,15 @@ export declare const RadarController: ChartComponent & {
   prototype: RadarController;
   new (chart: Chart, datasetIndex: number): RadarController;
 };
+
+interface ChartMetaClip {
+  left: number | boolean;
+  top: number | boolean;
+  right: number | boolean;
+  bottom: number | boolean;
+  disabled: boolean;
+}
+
 interface ChartMetaCommon<TElement extends Element = Element, TDatasetElement extends Element = Element> {
   type: string;
   controller: DatasetController;
@@ -462,6 +471,7 @@ interface ChartMetaCommon<TElement extends Element = Element, TDatasetElement ex
   _sorted: boolean;
   _stacked: boolean | 'single';
   _parsed: unknown[];
+  _clip: ChartMetaClip;
 }
 
 export type ChartMeta<
@@ -1070,9 +1080,10 @@ export interface Plugin<TType extends ChartType = ChartType, O = AnyObject> exte
    * @param {ChartEvent} args.event - The event object.
    * @param {boolean} args.replay - True if this event is replayed from `Chart.update`
    * @param {boolean} args.inChartArea - The event position is inside chartArea
+   * @param {boolean} [args.changed] - Set to true if the plugin needs a render. Should only be changed to true, because this args object is passed through all plugins.
    * @param {object} options - The plugin options.
    */
-  beforeEvent?(chart: Chart<TType>, args: { event: ChartEvent, replay: boolean, cancelable: true, inChartArea: boolean }, options: O): boolean | void;
+  beforeEvent?(chart: Chart<TType>, args: { event: ChartEvent, replay: boolean, changed?: boolean; cancelable: true, inChartArea: boolean }, options: O): boolean | void;
   /**
    * @desc Called after the `event` has been consumed. Note that this hook
    * will not be called if the `event` has been previously discarded.
@@ -1508,7 +1519,7 @@ export declare const Ticks: {
      * @param ticks the list of ticks being converted
      * @return string representation of the tickValue parameter
      */
-    numeric(tickValue: number, index: number, ticks: { value: number }[]): string;
+    numeric(this: Scale, tickValue: number, index: number, ticks: { value: number }[]): string;
     /**
      * Formatter for logarithmic ticks
      * @param tickValue the value to be formatted
@@ -1516,7 +1527,7 @@ export declare const Ticks: {
      * @param ticks the list of ticks being converted
      * @return string representation of the tickValue parameter
      */
-    logarithmic(tickValue: number, index: number, ticks: { value: number }[]): string;
+    logarithmic(this: Scale, tickValue: number, index: number, ticks: { value: number }[]): string;
   };
 };
 
@@ -1611,12 +1622,22 @@ export interface CoreChartOptions<TType extends ChartType> extends ParsingOption
    * base background color
    * @see Defaults.backgroundColor
    */
-  backgroundColor: Scriptable<Color, ScriptableContext<TType>>;
+  backgroundColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
+  /**
+   * base hover background color
+   * @see Defaults.hoverBackgroundColor
+   */
+  hoverBackgroundColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
   /**
    * base border color
    * @see Defaults.borderColor
    */
-  borderColor: Scriptable<Color, ScriptableContext<TType>>;
+  borderColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
+  /**
+   * base hover border color
+   * @see Defaults.hoverBorderColor
+   */
+  hoverBorderColor: ScriptableAndArray<Color, ScriptableContext<TType>>;
   /**
    * base font
    * @see Defaults.font
@@ -1827,6 +1848,12 @@ export interface ArcBorderRadius {
 }
 
 export interface ArcOptions extends CommonElementOptions {
+  /**
+   * If true, Arc can take up 100% of a circular graph without any visual split or cut. This option doesn't support borderRadius and borderJoinStyle miter
+   * @default true
+   */
+  selfJoin: boolean;
+
   /**
    * Arc stroke alignment.
    */
@@ -2651,10 +2678,23 @@ export interface Tooltip extends Plugin {
 
 export declare const Tooltip: Tooltip;
 
-export interface TooltipCallbacks<
+export interface TooltipDatasetCallbacks<
   TType extends ChartType,
   Model = TooltipModel<TType>,
   Item = TooltipItem<TType>> {
+  beforeLabel(this: Model, tooltipItem: Item): string | string[] | void;
+  label(this: Model, tooltipItem: Item): string | string[] | void;
+  afterLabel(this: Model, tooltipItem: Item): string | string[] | void;
+
+  labelColor(this: Model, tooltipItem: Item): TooltipLabelStyle | void;
+  labelTextColor(this: Model, tooltipItem: Item): Color | void;
+  labelPointStyle(this: Model, tooltipItem: Item): { pointStyle: PointStyle; rotation: number } | void;
+}
+
+export interface TooltipCallbacks<
+  TType extends ChartType,
+  Model = TooltipModel<TType>,
+  Item = TooltipItem<TType>> extends TooltipDatasetCallbacks<TType, Model, Item> {
 
   beforeTitle(this: Model, tooltipItems: Item[]): string | string[] | void;
   title(this: Model, tooltipItems: Item[]): string | string[] | void;
@@ -2886,6 +2926,10 @@ export interface TooltipOptions<TType extends ChartType = ChartType> extends Cor
   callbacks: TooltipCallbacks<TType>;
 }
 
+export interface TooltipDatasetOptions<TType extends ChartType = ChartType> {
+  callbacks: TooltipDatasetCallbacks<TType>;
+}
+
 export interface TooltipItem<TType extends ChartType> {
   /**
    * The chart the tooltip is being shown on
@@ -2931,6 +2975,10 @@ export interface TooltipItem<TType extends ChartType> {
    * The chart element (point, arc, bar, etc.) for this tooltip item
    */
   element: Element;
+}
+
+export interface PluginDatasetOptionsByType<TType extends ChartType> {
+  tooltip: TooltipDatasetOptions<TType>;
 }
 
 export interface PluginOptionsByType<TType extends ChartType> {
@@ -3579,6 +3627,7 @@ export type RadialLinearScaleOptions = CoreScaleOptions & {
 export interface RadialLinearScale<O extends RadialLinearScaleOptions = RadialLinearScaleOptions> extends Scale<O> {
   xCenter: number;
   yCenter: number;
+  readonly drawingArea: number;
   setCenterPoint(leftMovement: number, rightMovement: number, topMovement: number, bottomMovement: number): void;
   getIndexAngle(index: number): number;
   getDistanceFromCenterForValue(value: number): number;
@@ -3633,7 +3682,7 @@ export interface CartesianParsedData extends Point {
   }
 }
 
-interface BarParsedData extends CartesianParsedData {
+export interface BarParsedData extends CartesianParsedData {
   // Only specified if floating bars are show
   _custom?: {
     barStart: number;
@@ -3645,12 +3694,12 @@ interface BarParsedData extends CartesianParsedData {
   }
 }
 
-interface BubbleParsedData extends CartesianParsedData {
+export interface BubbleParsedData extends CartesianParsedData {
   // The bubble radius value
   _custom: number;
 }
 
-interface RadialParsedData {
+export interface RadialParsedData {
   r: number;
 }
 
@@ -3773,6 +3822,8 @@ export type ChartDataset<
   TData = DefaultDataPoint<TType>
 > = DeepPartial<
 { [key in ChartType]: { type: key } & ChartTypeRegistry[key]['datasetOptions'] }[TType]
+> & DeepPartial<
+PluginDatasetOptionsByType<TType>
 > & ChartDatasetProperties<TType, TData>;
 
 export type ChartDatasetCustomTypesPerDataset<
@@ -3780,6 +3831,8 @@ export type ChartDatasetCustomTypesPerDataset<
   TData = DefaultDataPoint<TType>
 > = DeepPartial<
 { [key in ChartType]: { type: key } & ChartTypeRegistry[key]['datasetOptions'] }[TType]
+> & DeepPartial<
+PluginDatasetOptionsByType<TType>
 > & ChartDatasetPropertiesCustomTypesPerDataset<TType, TData>;
 
 /**
