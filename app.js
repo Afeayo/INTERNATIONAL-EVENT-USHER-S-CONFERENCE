@@ -11,14 +11,6 @@ const userRouter = require('./route/userRoute');
 
 const app = express();
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI)
-    .then(() => {
-        console.log('Connected to MongoDB Atlas');
-    })
-    .catch((error) => {
-        console.error('Error connecting to MongoDB Atlas:', error);
-    });
 
 // Middleware
 app.set('view engine', 'ejs');
@@ -46,12 +38,23 @@ app.get('/', (req, res) => {
 });
 
 // Start server
+// Connect to MongoDB ONCE
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log('Connected to MongoDB Atlas');
+
+        // Start server ONLY after DB connects
+        const PORT = process.env.PORT || 8000;
+
+        app.listen(PORT, '0.0.0.0', () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
     })
     .catch((error) => {
         console.error('MongoDB error:', error);
-        process.exit(1); // ensures clean failure instead of weird loop
+        process.exit(1);
     });
-    console.log("MONGO_URI:", process.env.MONGO_URI);
+
+// Debug (optional)
+console.log("MONGO_URI:", process.env.MONGO_URI);
