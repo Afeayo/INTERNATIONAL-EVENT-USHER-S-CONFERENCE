@@ -82,28 +82,31 @@
 <body>
     <div class="container">
         <div class="logo">
-            <img src="../images/ICEU.png" alt="logo">
+            <img src=https://res.cloudinary.com/dlvurzdlr/image/upload/v1775547835/ICEU_small_moxvrc.png" alt="logo">
         </div>
         <h1>Register</h1>
-        <form id="registerForm">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
-            <label for="tel">Phone:</label>
-            <input type="tel" id="tel" name="tel" required>
-            <button type="submit">Register</button>
-        </form>
+       <form action="/user/register" method="POST">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
 
-        <div id="spinner">Sending OTP, please wait...</div>
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" required>
+
+    <label for="tel">Phone:</label>
+    <input type="tel" id="tel" name="tel" required>
+
+    <button type="submit">Register</button>
+</form>
+
+        <!--<div id="spinner">Sending OTP, please wait...</div>
 
         <div id="otpSection">
             <h2>Verify Email</h2>
             <p>Please check your email for the verification link.</p>
-        </div>
+        </div>-->
     </div>
 
-    <script>
+    <!--<script>
         document.getElementById('registerForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const name = document.getElementById('name').value;
@@ -114,7 +117,7 @@
             document.getElementById('registerForm').style.display = 'none';
 
             try {
-                const response = await fetch('/user/register/initiate', {
+                const response = await fetch('/user/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -136,6 +139,6 @@
                 document.getElementById('spinner').style.display = 'none';
             }
         });
-    </script>
+    </script>-->
 </body>
 </html>

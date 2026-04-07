@@ -1,4 +1,66 @@
+
 require('dotenv').config();
+const express = require('express');
+const User = require('../models/user');
+const path = require('path');
+
+const userRouter = express.Router();
+
+// Serve registration page
+userRouter.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'register.html'));
+});
+
+// DIRECT REGISTRATION (NO OTP, NO EMAIL)
+userRouter.post('/register', async (req, res) => {
+    const { name, email, tel } = req.body;
+
+    try {
+        // Check if user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ 
+                message: 'Email already exists. Please use a different email.' 
+            });
+        }
+
+        // Save user directly
+        const newUser = new User({
+            name,
+            email,
+            tel,
+            emailVerified: true // optional: mark as verified since no email confirmation
+        });
+
+        await newUser.save();
+
+        // Redirect to success page
+        return res.redirect('/user/register/success');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            message: 'An error occurred during registration.' 
+        });
+    }
+});
+
+// Success page
+userRouter.get('/register/success', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'success.html'));
+});
+
+module.exports = userRouter;
+
+
+
+
+
+
+
+
+
+/*require('dotenv').config();
 const express = require('express');
 const nodemailer = require('nodemailer');
 const User = require('../models/user');
@@ -150,3 +212,4 @@ userRouter.get('/register/success', (req, res) => {
 });
 
 module.exports = userRouter;
+*/
