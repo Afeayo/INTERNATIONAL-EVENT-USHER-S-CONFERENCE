@@ -45,7 +45,7 @@ canvas {
 
 <h1>I WILL BE ATTENDING</h1>
 
-<input type="text" id="nameInput" placeholder="Enter your name"><br>
+<!--<input type="text" id="nameInput" placeholder="Enter your name"><br>-->
 <input type="file" id="imageInput" accept="image/*"><br>
 
 <canvas id="flyerCanvas" width="800" height="1000"></canvas><br>
@@ -61,7 +61,7 @@ const downloadBtn = document.getElementById('downloadBtn');
 
 // LOAD REAL ICEU BACKGROUND
 const flyerTemplate = new Image();
-flyerTemplate.src = "/images/ICEU attendance announcement in Abuja copy.png"; 
+flyerTemplate.src = "/images/ICEU-WITH BG.png"; 
 
 flyerTemplate.onload = () => {
   ctx.drawImage(flyerTemplate, 0, 0, canvas.width, canvas.height);

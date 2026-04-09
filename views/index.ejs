@@ -792,10 +792,8 @@
           const navLinks = document.getElementById("nav-links");
           navLinks.classList.toggle("active");
         });*/
-        document.querySelector('.menu-toggle').addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('active');
-});
-
+      
+        
       /*document.getElementById('submit').onclick=function(){
             alert('We apologize, but registration for this year event is now closed. Thank you for your interest. Please keep an eye out for announcements regarding next year registration period.')
         }
@@ -876,6 +874,15 @@
           },
         },
       });
+
+      document.addEventListener("DOMContentLoaded", function () {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector(".nav-links");
+
+  toggle.addEventListener("click", () => {
+    nav.classList.toggle("active");
+  });
+});
     </script>
   </body>
 </html>
