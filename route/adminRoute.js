@@ -268,7 +268,7 @@ AdminRouter.get('/download/nominees', async (req, res) => {
 });
 
 // Admin registration route
-AdminRouter.get('/register',isAuthenticated,async (req, res) => {
+AdminRouter.get('/register',async (req, res) => {
     res.render('admin_register', { error: null });
 });
 
@@ -361,7 +361,7 @@ AdminRouter.get('/download/users', isAuthenticated, async (req, res) => {
         const csv = json2csvParser.parse(users);
 
         res.header('Content-Type', 'text/csv');
-        res.attachment('users_report.csv');
+        res.attachment('users_report.csv');~
         res.send(csv);
     } catch (err) {
         console.error('Error exporting users to CSV:', err);
