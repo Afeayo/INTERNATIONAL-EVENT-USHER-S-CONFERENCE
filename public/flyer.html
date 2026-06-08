@@ -2,140 +2,225 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>ICEU Attend Flyer Generator</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ICEU Abuja – I Will Be Attending</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-body {
-  font-family: Arial, sans-serif;
-  text-align: center;
-  padding: 30px;
-  background: #0a0a0a;
-  color: white;
-}
-
-h1 {
-  color: gold;
-}
-
-input {
-  margin: 10px;
-  padding: 10px;
-}
-
-canvas {
-  margin-top: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 30px rgba(255,215,0,0.2);
-}
-
-.btn {
-  padding: 12px 25px;
-  margin-top: 20px;
-  background: gold;
-  color: black;
-  border: none;
-  cursor: pointer;
-  border-radius: 30px;
-  font-weight: bold;
-}
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --gold: #C9960C; --gold-light: #F0C040; --gold-dark: #8B6500; --cream: #F5EDD6;
+  }
+  body {
+    background: #1a1208; font-family: 'Montserrat', sans-serif;
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; padding: 30px 16px 60px;
+  }
+  .page-title { text-align: center; margin-bottom: 32px; }
+  .page-title h1 {
+    font-family: 'Playfair Display', serif; font-style: italic;
+    color: var(--gold-light); font-size: clamp(1.6rem, 4vw, 2.6rem); line-height: 1.15;
+  }
+  .page-title p { color: #bfa050; font-size: .85rem; margin-top: 6px; letter-spacing: .08em; text-transform: uppercase; }
+  .app { display: flex; gap: 32px; align-items: flex-start; flex-wrap: wrap; justify-content: center; width: 100%; max-width: 1200px; }
+  .controls {
+    background: linear-gradient(160deg, #2a1e06 0%, #1a1208 100%);
+    border: 1px solid #4a3510; border-radius: 16px; padding: 28px 24px;
+    width: 320px; flex-shrink: 0; box-shadow: 0 8px 40px rgba(0,0,0,.5);
+  }
+  .controls h2 { color: var(--gold-light); font-size: .8rem; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 22px; padding-bottom: 10px; border-bottom: 1px solid #4a3510; }
+  .field { margin-bottom: 20px; }
+  .field label { display: block; color: #bfa050; font-size: .75rem; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+  .field input[type="text"] {
+    width: 100%; background: #0d0a04; border: 1px solid #4a3510; border-radius: 8px;
+    color: var(--cream); font-family: 'Montserrat', sans-serif; font-size: .95rem;
+    padding: 10px 14px; outline: none; transition: border-color .2s;
+  }
+  .field input[type="text"]:focus { border-color: var(--gold); }
+  .upload-area {
+    border: 2px dashed #4a3510; border-radius: 12px; padding: 24px 16px;
+    text-align: center; cursor: pointer; transition: border-color .25s, background .25s;
+    position: relative; overflow: hidden;
+  }
+  .upload-area:hover { border-color: var(--gold); background: rgba(201,150,12,.05); }
+  .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .upload-icon { font-size: 2rem; margin-bottom: 8px; }
+  .upload-area p { color: #bfa050; font-size: .8rem; line-height: 1.5; }
+  .upload-area .hint { color: #6a5020; font-size: .7rem; margin-top: 4px; }
+  #preview-thumb { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--gold); margin: 0 auto 8px; display: none; }
+  .btn-generate {
+    width: 100%; margin-top: 10px; padding: 13px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+    color: #1a1208; font-family: 'Montserrat', sans-serif; font-weight: 800;
+    font-size: .9rem; letter-spacing: .1em; text-transform: uppercase;
+    border: none; border-radius: 10px; cursor: pointer; transition: opacity .2s, transform .15s;
+  }
+  .btn-generate:hover { opacity: .9; transform: translateY(-1px); }
+  .btn-download {
+    display: none; width: 100%; margin-top: 12px; padding: 13px;
+    background: #0d0a04; color: var(--gold-light); font-family: 'Montserrat', sans-serif;
+    font-weight: 700; font-size: .85rem; letter-spacing: .1em; text-transform: uppercase;
+    border: 1px solid var(--gold-dark); border-radius: 10px; cursor: pointer;
+    transition: background .2s; text-align: center;
+  }
+  .btn-download:hover { background: rgba(201,150,12,.15); }
+  .canvas-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+  canvas { border-radius: 12px; box-shadow: 0 12px 60px rgba(0,0,0,.7), 0 0 0 1px #4a3510; max-width: 100%; max-height: 82vh; }
+  .placeholder-msg { color: #4a3510; font-size: .85rem; text-align: center; margin-top: 60px; font-style: italic; }
 </style>
 </head>
-
 <body>
+<div class="page-title">
+  <h1>ICEU Abuja Edition</h1>
+  <p>Generate your "I Will Be Attending" flyer</p>
+</div>
 
-<h1>I WILL BE ATTENDING</h1>
+<div class="app">
+  <div class="controls">
+    <h2>Customize your flyer</h2>
+    <div class="field">
+      <label>Your Full Name</label>
+      <input type="text" id="name-input" placeholder="e.g. John Doe" maxlength="40">
+    </div>
+    <div class="field">
+      <label>Your Photo</label>
+      <div class="upload-area">
+        <input type="file" id="photo-input" accept="image/*">
+        <img id="preview-thumb" src="" alt="preview">
+        <div class="upload-icon">📷</div>
+        <p>Click to upload your photo</p>
+        <p>📌Add Your Name </p>
+        <p>📌 Post on Instagram </p>
+        <p>📌 Tag @iceuconference </p>
+        <p>📌 Use: #ICEUAbuja #ICEU #BeyondUshering</p>
+        <p class="hint">JPG, PNG or WEBP · Square crop works best</p>
+      </div>
+    </div>
+    <button class="btn-generate" id="btn-gen">✦ Generate Flyer</button>
+    <button class="btn-download" id="btn-dl">⬇ Download Flyer</button>
+  </div>
 
-<!--<input type="text" id="nameInput" placeholder="Enter your name"><br>-->
-<input type="file" id="imageInput" accept="image/*"><br>
-
-<canvas id="flyerCanvas" width="800" height="1000"></canvas><br>
-
-<button class="btn" id="downloadBtn">Download Flyer</button>
+  <div class="canvas-wrap">
+    <p class="placeholder-msg" id="placeholder">Your flyer preview will appear here after you hit Generate.</p>
+    <canvas id="flyer-canvas" style="display:none;"></canvas>
+  </div>
+</div>
 
 <script>
-const imageInput = document.getElementById('imageInput');
-const nameInput = document.getElementById('nameInput');
-const canvas = document.getElementById('flyerCanvas');
-const ctx = canvas.getContext('2d');
-const downloadBtn = document.getElementById('downloadBtn');
+// ── Pixel-accurate measurements from 1602×1955 template ──
+// Circle: cx=1242, cy=937, inner_radius=305
+// Name bar: x=938, y=1280, w=609, h=130  (solid gold band)
+const TMPL_W = 1602, TMPL_H = 1955;
+const CIRCLE  = { cx: 1242, cy: 937, r: 300 };
+const NAMEBAR = { x: 938, y: 1280, w: 609, h: 130 };
 
-// LOAD REAL ICEU BACKGROUND
-const flyerTemplate = new Image();
-flyerTemplate.src = "/images/ICEU-WITH BG.png"; 
+const canvas  = document.getElementById('flyer-canvas');
+const ctx     = canvas.getContext('2d');
+const nameInput    = document.getElementById('name-input');
+const photoInput   = document.getElementById('photo-input');
+const previewThumb = document.getElementById('preview-thumb');
+const btnGen  = document.getElementById('btn-gen');
+const btnDl   = document.getElementById('btn-dl');
+const placeholder  = document.getElementById('placeholder');
 
-flyerTemplate.onload = () => {
-  ctx.drawImage(flyerTemplate, 0, 0, canvas.width, canvas.height);
-};
+let userPhoto = null;
+const templateImg = new Image();
 
-// DRAW CIRCLE IMAGE
-function drawCircularImage(img, x, y, size) {
-  ctx.save();
+// Load template as blob to avoid CORS issues
+fetch('I AM ATTENDING TEMPLATE.png')
+  .then(r => r.blob())
+  .then(blob => { templateImg.src = URL.createObjectURL(blob); })
+  .catch(() => { templateImg.src = 'I AM ATTENDING TEMPLATE.png'; });
 
-  ctx.beginPath();
-  ctx.arc(x + size/2, y + size/2, size/2, 0, Math.PI * 2);
-  ctx.closePath();
-  ctx.clip();
-
-  ctx.drawImage(img, x, y, size, size);
-  ctx.restore();
-
-  // GOLD BORDER
-  ctx.beginPath();
-  ctx.arc(x + size/2, y + size/2, size/2 + 5, 0, Math.PI * 2);
-  ctx.strokeStyle = "gold";
-  ctx.lineWidth = 6;
-  ctx.stroke();
-}
-
-imageInput.addEventListener('change', function () {
-  const file = this.files[0];
+photoInput.addEventListener('change', e => {
+  const file = e.target.files[0];
   if (!file) return;
-
   const reader = new FileReader();
-
-  reader.onload = function (event) {
-    const userImage = new Image();
-
-    userImage.onload = function () {
-
-      // REDRAW BACKGROUND
-      ctx.drawImage(flyerTemplate, 0, 0, canvas.width, canvas.height);
-
-      // PROFILE IMAGE POSITION (adjust if needed)
-      drawCircularImage(userImage, 250, 280, 300);
-
-      // USER NAME
-      const userName = nameInput.value || "Your Name";
-
-      ctx.fillStyle = "white";
-      ctx.font = "bold 36px Arial";
-      ctx.textAlign = "center";
-      ctx.fillText(userName, 400, 650);
-
-      // ATTENDING TEXT
-      ctx.fillStyle = "gold";
-      ctx.font = "bold 42px Arial";
-      ctx.fillText(" ", 400, 710);
-
-      // SMALL FOOTER
-      ctx.fillStyle = "#ddd";
-      ctx.font = "22px Arial";
-      ctx.fillText(" ", 400, 760);
+  reader.onload = ev => {
+    const img = new Image();
+    img.onload = () => {
+      userPhoto = img;
+      previewThumb.src = ev.target.result;
+      previewThumb.style.display = 'block';
+      document.querySelector('.upload-icon').style.display = 'none';
     };
-
-    userImage.src = event.target.result;
+    img.src = ev.target.result;
   };
-
   reader.readAsDataURL(file);
 });
 
-downloadBtn.addEventListener('click', () => {
-  const link = document.createElement('a');
-  link.download = 'ICEU-attending.png';
-  link.href = canvas.toDataURL();
-  link.click();
+btnGen.addEventListener('click', () => {
+  placeholder.style.display = 'none';
+  canvas.style.display = 'block';
+  canvas.width  = TMPL_W;
+  canvas.height = TMPL_H;
+
+  const draw = () => {
+    ctx.clearRect(0, 0, TMPL_W, TMPL_H);
+
+    // 1 — Template
+    ctx.drawImage(templateImg, 0, 0, TMPL_W, TMPL_H);
+
+    // 2 — Photo clipped to circle
+    if (userPhoto) {
+      const { cx, cy, r } = CIRCLE;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, r, 0, Math.PI * 2);
+      ctx.clip();
+
+      // Cover-fit: fill circle without distortion
+      const diam = r * 2;
+      const imgAR = userPhoto.width / userPhoto.height;
+      let sw, sh, dx, dy;
+      if (imgAR >= 1) {          // landscape: fit height
+        sh = diam; sw = diam * imgAR;
+        dx = cx - sw / 2; dy = cy - r;
+      } else {                   // portrait: fit width
+        sw = diam; sh = diam / imgAR;
+        dx = cx - r; dy = cy - sh / 2;
+      }
+      ctx.drawImage(userPhoto, dx, dy, sw, sh);
+      ctx.restore();
+    }
+
+    // 3 — Name on gold bar
+    const name = nameInput.value.trim() || 'Your Name';
+    const { x, y, w, h } = NAMEBAR;
+    const pad = 30;
+    const fs = calcFontSize(name, w - pad * 2, h * 0.7);
+
+    ctx.save();
+    ctx.font = `800 ${fs}px Montserrat, sans-serif`;
+    ctx.fillStyle = '#1a1208';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(name, x + w / 2, y + h / 2);
+    ctx.restore();
+
+    btnDl.style.display = 'block';
+  };
+
+  if (templateImg.complete && templateImg.naturalWidth) draw();
+  else templateImg.onload = draw;
+});
+
+function calcFontSize(text, maxW, maxH) {
+  let size = Math.min(100, maxH);
+  ctx.font = `800 ${size}px Montserrat, sans-serif`;
+  while ((ctx.measureText(text).width > maxW || size > maxH) && size > 18) {
+    size -= 2;
+    ctx.font = `800 ${size}px Montserrat, sans-serif`;
+  }
+  return size;
+}
+
+btnDl.addEventListener('click', () => {
+  const name = nameInput.value.trim().replace(/\s+/g, '_') || 'ICEU_Attending';
+  const a = document.createElement('a');
+  a.download = `ICEU_${name}_IWillBeAttending.png`;
+  a.href = canvas.toDataURL('image/png');
+  a.click();
 });
 </script>
-
 </body>
 </html>
