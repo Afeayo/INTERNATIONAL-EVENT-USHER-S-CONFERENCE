@@ -129,7 +129,7 @@ const templateImg = new Image();
 fetch('I AM ATTENDING TEMPLATE.png')
   .then(r => r.blob())
   .then(blob => { templateImg.src = URL.createObjectURL(blob); })
-  .catch(() => { templateImg.src = 'I AM ATTENDING TEMPLATE.png'; });
+  .catch(() => { templateImg.src = '/images/I AM ATTENDING TEMPLATE.png'; });
 
 photoInput.addEventListener('change', e => {
   const file = e.target.files[0];
