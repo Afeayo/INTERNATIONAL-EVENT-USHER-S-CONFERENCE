@@ -5,7 +5,75 @@ const User = require('../models/user');
 const path = require('path');
 
 const userRouter = express.Router();
+// Serve registration page
+userRouter.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'register.html'));
+});
 
+// DIRECT REGISTRATION — saves user, then fires-and-forgets a call
+// to the separate mailer microservice (hosted somewhere SMTP works)
+userRouter.post('/register', async (req, res) => {
+    const { name, email, tel } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({
+                message: 'Email already exists. Please use a different email.'
+            });
+        }
+
+        const newUser = new User({
+            name,
+            email,
+            tel,
+            emailVerified: true
+        });
+
+        await newUser.save();
+
+        // Fire-and-forget call to the mailer microservice.
+        // We deliberately do NOT await/block on this — if the mailer
+        // service is down or slow, registration still succeeds.
+        if (process.env.MAILER_SERVICE_URL && process.env.MAILER_API_KEY) {
+            fetch(`${process.env.MAILER_SERVICE_URL}/api/send-welcome-email`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': process.env.MAILER_API_KEY
+                },
+                body: JSON.stringify({
+                    name: newUser.name,
+                    email: newUser.email,
+                    tel: newUser.tel,
+                    userId: newUser._id
+                })
+            }).catch((err) => {
+                console.error('Failed to trigger welcome email:', err.message);
+            });
+        } else {
+            console.warn('MAILER_SERVICE_URL / MAILER_API_KEY not set — skipping welcome email');
+        }
+
+        return res.redirect('/user/register/success');
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: 'An error occurred during registration.'
+        });
+    }
+});
+
+// Success page
+userRouter.get('/register/success', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'success.html'));
+});
+
+module.exports = userRouter;
+
+
+/*
 // Serve registration page
 userRouter.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'public', 'register.html'));
